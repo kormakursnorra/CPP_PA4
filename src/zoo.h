@@ -2,7 +2,7 @@
 #define ZOO_H
 
 #include "hobos/player.h"
-#include "creature/creature.h"
+#include "creatures/creature.h"
 
 #include <unordered_map>
 

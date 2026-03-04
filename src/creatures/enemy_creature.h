@@ -1,7 +1,7 @@
 #ifndef ENEMY_CREATURE_H
 #define ENEMY_CREATURE_H
 
-#include "creature/creature.h"
+#include "creatures/creature.h"
 
 class EnemyCreature : public Creature {
 public: 

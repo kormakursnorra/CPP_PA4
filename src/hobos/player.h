@@ -1,7 +1,7 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include "creature/move.h"
+#include "creatures/move.h"
 
 class Player {
 public:

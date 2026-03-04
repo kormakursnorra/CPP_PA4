@@ -1,4 +1,4 @@
-#include "creature/enemy_creature.h"
+#include "creatures/enemy_creature.h"
 #include <cstdlib>
 #include <iostream>
 
