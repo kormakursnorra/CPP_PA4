@@ -4,9 +4,13 @@
 #include "character.h"
 #include "enemy.h"
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 #include "battle.h"
 >>>>>>> hreimur
+=======
+#include "battle.h"
+>>>>>>> 180ed7b259e477513e27a24a2c97ecbf4cfe21fa
 
 int main() {
     srand(time(0));
