@@ -1,20 +1,21 @@
 #include "battle.h"
+
 #include <iostream>
 #include <cstdlib>
 
-Battle::Battle(Entity* player, Entity* opponent)
+Battle::Battle(PlayerHobo* player, EnemyHobo* opponent)
     : player(player), opponent(opponent) {}
 
-Entity* Battle::whoGoesFirst() {
+Hobo* Battle::whoGoesFirst() {
     return player->getSpeed() >= opponent->getSpeed() ? player : opponent;
 }
 
-Entity* Battle::whoGoesSecond() {
+Hobo* Battle::whoGoesSecond() {
     return player->getSpeed() >= opponent->getSpeed() ? opponent : player
     ; 
 }
 
-int Battle::calcDmg(Entity* attacker, Move* move) {
+int Battle::calcDmg(Creature* attacker, Move* move) {
     if (!move->hits()) return 0;
     int dmg = (attacker->getAttack() * move->getPower()) / 100;
 
@@ -35,7 +36,7 @@ void Battle::displayStatus() {
     std::cout << "\n";
 }
 
-void Battle::doTurn(Entity* attacker, Entity* defender) {
+void Battle::doTurn(Creature* attacker, Creature* defender) {
 
     attacker->applyStatusEffect();
 
@@ -68,8 +69,8 @@ void Battle::doTurn(Entity* attacker, Entity* defender) {
 void Battle::run() {
     std::cout << "A wild " << opponent->getName() << " appears!\n";
 
-    Entity* first = whoGoesFirst();
-    Entity* second = whoGoesSecond();
+    Hobo* first = whoGoesFirst();
+    Hobo* second = whoGoesSecond();
 
     while (player->isAlive() && opponent->isAlive()) {
         displayStatus();

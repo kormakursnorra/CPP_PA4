@@ -3,9 +3,9 @@
 
 #include "hobos/hobo.h"
 
-class Player : public Hobo {
+class PlayerHobo : public Hobo {
 public:
-    Player(const std::string name);
+    PlayerHobo(const std::string name);
     Move* chooseAction();
 };
 

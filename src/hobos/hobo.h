@@ -28,6 +28,7 @@ public:
     // void useItem(Item *item);   
     void addCreature();
     void drinkAlchohol();
+    virtual Move* chooseAction();
     virtual ~Hobo();
 };
 

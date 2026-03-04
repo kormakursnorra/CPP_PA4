@@ -1,21 +1,24 @@
 #ifndef BATTLE_H
 #define BATTLE_H
 
-#include "entity.h"
+#include "creatures/creature.h"
+#include "hobos/hobo.h"
+#include "hobos/player_hobo.h"
+#include "hobos/enemy_hobo.h"
 
 class Battle {
 private:
-    Entity* player;
-    Entity* opponent;
+    PlayerHobo* player;
+    EnemyHobo* opponent;
 
-    Entity* whoGoesFirst();
-    Entity* whoGoesSecond();
-    int calcDmg(Entity* attacker, Move* move);
+    Hobo* whoGoesFirst();
+    Hobo* whoGoesSecond();
+    int calcDmg(Creature* attacker, Move* move);
     void displayStatus();
-    void doTurn(Entity* attacker, Entity* defender);
+    void doTurn(Creature* attacker, Creature* defender);
 
 public:
-    Battle(Entity* player, Entity* opponent);
+    Battle(PlayerHobo* player, EnemyHobo* opponent);
     void run();
 };
 
