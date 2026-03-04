@@ -1,12 +1,12 @@
 #ifndef HOBO_H
 #define HOBO_H
 
-#include "creatures/move.h"
+#include "creatures/"
 
 class Hobo {
 public:
     
-    Move* chooseAction();
+    void chooseAction();
 };
 
 #endif
