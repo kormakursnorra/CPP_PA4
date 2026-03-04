@@ -1,5 +1,5 @@
-#include "Character.h"
-#include "Entity.h"
+#include "character.h"
+#include "entity.h"
 #include <iostream>
 
 Character::Character(std::string name, int hp, int attack, int defense, int speed)

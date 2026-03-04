@@ -1,4 +1,4 @@
-#include "Entity.h"
+#include "entity.h"
 #include <iostream>
 
 Entity::Entity(std::string name, int hp, int attack, int defense, int speed)

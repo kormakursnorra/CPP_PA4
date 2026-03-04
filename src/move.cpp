@@ -1,4 +1,4 @@
-#include "Move.h"
+#include "move.h"
 #include <cstdlib>
 #include <iostream>
 
