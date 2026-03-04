@@ -1,7 +1,7 @@
 #ifndef ENTITY_H
 #define ENTITY_H
 
-#include "Move.h"
+#include "move.h"
 #include <string>
 
 class Entity {

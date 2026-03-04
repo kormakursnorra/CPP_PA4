@@ -1,8 +1,9 @@
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
-#include "Character.h"
-#include "Enemy.h"
+#include "character.h"
+#include "enemy.h"
+#include "battle.h"
 
 int main() {
     srand(time(0));
@@ -14,14 +15,8 @@ int main() {
     foe.addMove(Move("Gust", 40, 100));
     foe.addMove(Move("Tackle", 35, 95));
 
-    hero.displayStatus();
-    std::cout << " | ";
-    foe.displayStatus();
-    std::cout << "\n";
-
-    Move* chosen = hero.chooseAction();
-    std::cout << "You used " << chosen->getName() << "!\n";
-
+    Battle battle(&hero, &foe);
+    battle.run();
 
     return 0;
 }
