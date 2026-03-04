@@ -1,8 +1,8 @@
 #ifndef MOVE_H
 #define MOVE_H
 
+#include "creatures/status.h"
 #include <string>
-#include "status.h"
 
 class Move {
 private:

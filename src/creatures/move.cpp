@@ -1,11 +1,13 @@
-#include "move.h"
+#include "creatures/move.h"
 #include <cstdlib>
 #include <iostream>
 
 Move::Move() : name(""), power(0), accuracy(100) {}
 
-Move::Move(std::string name, int power, int accuracy, Status effect, int effectChance)
-    : name(name), power(power), accuracy(accuracy),
+Move::Move(std::string name, int power, 
+    int accuracy, Status effect, int effectChance
+)
+    : name(name), power(power), accuracy(accuracy), 
     effect(effect), effectChance(effectChance) {}
 
 std::string Move::getName() const {

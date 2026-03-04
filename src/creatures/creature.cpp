@@ -1,12 +1,16 @@
-#include "entity.h"
+#include "creatures/creature.h"
 #include <iostream>
 
-Entity::Entity(std::string name, int hp, int attack, int defense, int speed)
+Creature::Creature(std::string name, int hp, int attack, int defense, int speed)
     : name(name), hp(hp), maxHp(hp), attack(attack),
     defense(defense), speed(speed), moveCount(0),
     status(NONE), statusDuration(0) {}
 
-void Entity::takeDamage(int dmg) {
+bool Creature::operator==(const Creature &other) const {
+    return (name == other.name);
+}
+
+void Creature::takeDamage(int dmg) {
     int actual = (int)(((rand() % 5) + dmg) * (100 - defense) / 100);
     if (actual < 1) {
         actual = 1;
@@ -17,29 +21,29 @@ void Entity::takeDamage(int dmg) {
     }
 }
 
-bool Entity::isAlive() const {
+bool Creature::isAlive() const {
     return hp > 0;
 }
 
-void Entity::displayStatus() const {
+void Creature::displayStatus() const {
     std::cout << name << " (" << hp << "/" << maxHp << ")";
 }
 
-void Entity::displayMoves() const {
+void Creature::displayMoves() const {
     for (int i = 0; i < moveCount; i++) {
         std::cout << i + 1 << ". ";
         moves[i].display();
     }
 }
 
-void Entity::addMove(Move move) {
+void Creature::addMove(Move move) {
     if (moveCount <4) {
         moves[moveCount] = move;
         moveCount++;
     }
 }
 
-void Entity::setStatus(Status s, int duration) {
+void Creature::setStatus(Status s, int duration) {
     if (status != NONE) {
         return;
     }
@@ -48,7 +52,7 @@ void Entity::setStatus(Status s, int duration) {
     std::cout << name << " is now " << getStatusName() << "!\n";
 }
 
-std::string Entity::getStatusName() const {
+std::string Creature::getStatusName() const {
     switch (status) {
         case INFECTED: return "Infected";
         case STUNNED: return "stunned";
@@ -58,7 +62,7 @@ std::string Entity::getStatusName() const {
 
 }
 
-void Entity::applyStatusEffect() {
+void Creature::applyStatusEffect() {
     if (status == NONE) {
         return;
     }
@@ -98,22 +102,22 @@ void Entity::applyStatusEffect() {
     }
 }
 
-std::string Entity::getName() const {
+std::string Creature::getName() const {
     return name;
 }
 
-int Entity::getSpeed() const {
+int Creature::getSpeed() const {
     return speed;
 }
 
-int Entity::getAttack() const {
+int Creature::getAttack() const {
     return attack;
 }
 
-int Entity::getDefense() const {
+int Creature::getDefense() const {
     return defense;
 }
 
-Status Entity::getStatus() const {
+Status Creature::getStatus() const {
     return status;
 }

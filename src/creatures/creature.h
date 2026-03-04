@@ -1,11 +1,12 @@
-#ifndef ENTITY_H
-#define ENTITY_H
+#ifndef CREATURE_H
+#define CREATURE_H
 
-#include "move.h"
+#include "creatures/move.h"
+
 #include <string>
-#include "status.h"
+#include <functional>
 
-class Entity {
+class Creature {
 protected:
     std::string name;
     int hp;
@@ -20,7 +21,9 @@ protected:
 
 
 public:
-    Entity(std::string name, int hp, int attack, int defense, int speed);
+    Creature(std::string name, int hp, int attack, int defense, int speed);
+
+    bool operator==(const Creature &other) const;
 
     void takeDamage(int dmg);
     bool isAlive() const;
@@ -38,6 +41,16 @@ public:
     Status getStatus() const;
 
     virtual Move* chooseAction() = 0; // virtual shits dawg
-    virtual ~Entity() {}
+    virtual ~Creature() {}
 };
+
+namespace std {
+    template <> struct hash<Creature> {
+        size_t operator()(const Creature &creature) const {
+            size_t hash_name = hash<std::string>{}(creature.getName());
+            return hash_name;
+        }
+    };
+}
+
 #endif
