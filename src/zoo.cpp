@@ -1,5 +1,5 @@
 #include "zoo.h"
-#include "player.h"
+#include "hobos/player.h"
 #include "creature.h"
 #include <stdexcept>
 

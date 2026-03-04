@@ -1,8 +1,8 @@
 #ifndef ZOO_H
 #define ZOO_H
 
-#include <player.h>
-#include <creature.h>
+#include "hobos/player.h"
+#include "creature.h"
 
 #include <unordered_map>
 
