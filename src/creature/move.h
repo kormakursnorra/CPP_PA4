@@ -2,7 +2,7 @@
 #define MOVE_H
 
 #include <string>
-#include "status.h"
+#include "creature/status.h"
 
 class Move {
 private:

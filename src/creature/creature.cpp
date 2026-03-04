@@ -1,4 +1,4 @@
-#include "creature.h"
+#include "creature/creature.h"
 #include <iostream>
 
 Creature::Creature(std::string name, int hp, int attack, int defense, int speed)

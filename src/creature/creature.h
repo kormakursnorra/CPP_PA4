@@ -1,8 +1,8 @@
 #ifndef CREATURE_H
 #define CREATURE_H
 
-#include "move.h"
-#include "status.h"
+#include "creature/move.h"
+#include "creature/status.h"
 
 #include <string>
 #include <functional>
