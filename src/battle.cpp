@@ -29,6 +29,13 @@ void Battle::displayStatus() {
 }
 
 void Battle::doTurn(Entity* attacker, Entity* defender) {
+
+    attacker->applyStatusEffect();
+
+    if (attacker->getStatus() == STUNNED) {
+        return;
+    }
+
     std::cout << "\n" << attacker->getName() << "'s turn!\n";
 
     Move* move = attacker->chooseAction();

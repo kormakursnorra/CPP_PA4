@@ -3,6 +3,7 @@
 
 #include "move.h"
 #include <string>
+#include "status.h"
 
 class Entity {
 protected:
@@ -14,6 +15,8 @@ protected:
     int speed;
     Move moves[4];
     int moveCount;
+    Status status;
+    int statusDuration;
 
 
 public:
@@ -24,11 +27,15 @@ public:
     void displayStatus() const;
     void displayMoves() const;
     void addMove(Move move);
+    void setStatus(Status s, int duration);
+    void applyStatusEffect();
+    std::string getStatusName() const;
 
     std::string getName() const;
     int getSpeed() const;
     int getAttack() const;
     int getDefense() const;
+    Status getStatus() const;
 
     virtual Move* chooseAction() = 0; // virtual shits dawg
     virtual ~Entity() {}

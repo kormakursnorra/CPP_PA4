@@ -3,10 +3,11 @@
 
 Entity::Entity(std::string name, int hp, int attack, int defense, int speed)
     : name(name), hp(hp), maxHp(hp), attack(attack),
-    defense(defense), speed(speed), moveCount(0) {}
+    defense(defense), speed(speed), moveCount(0),
+    status(NONE), statusDuration(0) {}
 
 void Entity::takeDamage(int dmg) {
-    int actual = dmg - defense;
+    int actual = (int)(((rand() % 5) + dmg) * (100 - defense) / 100);
     if (actual < 1) {
         actual = 1;
     }
@@ -38,6 +39,65 @@ void Entity::addMove(Move move) {
     }
 }
 
+void Entity::setStatus(Status s, int duration) {
+    if (status != NONE) {
+        return;
+    }
+    status = s;
+    statusDuration = duration;
+    std::cout << name << " is now " << getStatusName() << "!\n";
+}
+
+std::string Entity::getStatusName() const {
+    switch (status) {
+        case INFECTED: return "Infected";
+        case STUNNED: return "stunned";
+        case BURNED: return "Burned";
+        default: return "Fine";
+    }
+
+}
+
+void Entity::applyStatusEffect() {
+    if (status == NONE) {
+        return;
+    }
+
+    switch (status) {
+        case INFECTED: {
+            int dmg = maxHp * 0.10;
+            hp -= dmg;
+            if (hp < 0) {
+                hp = 0;
+            }
+            std::cout << name << " is infected and lost " << dmg << "HP!\n";
+            break; 
+        }
+        case STUNNED: {
+            std::cout << name << " is stunned and cant move!\n";
+            break; 
+        }
+        case BURNED: {
+            int bdmg = maxHp * 0.05;
+            hp -= bdmg;
+            if (hp < 0) {
+                hp = 0;
+            }
+            std::cout << name << " is burning and lost " << bdmg << "HP!\n";
+            break; 
+        }
+        default: 
+            break;
+    }
+
+    statusDuration--;
+    if (statusDuration <= 0) {
+        std::cout << name << " recovered from" << getStatusName() << "!\n";
+        status = NONE;
+        statusDuration = 0;
+    }
+}
+
 std::string Entity::getName() const {
     return name;
 }
@@ -49,6 +109,11 @@ int Entity::getSpeed() const {
 int Entity::getAttack() const {
     return attack;
 }
+
 int Entity::getDefense() const {
     return defense;
+}
+
+Status Entity::getStatus() const {
+    return status;
 }
