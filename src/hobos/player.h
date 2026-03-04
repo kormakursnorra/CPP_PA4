@@ -1,11 +1,11 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include "creatures/move.h"
+#include "hobos/hobo.h"
 
-class Player {
+class Player : public Hobo {
 public:
-    
+    Player(std::string name);
     Move* chooseAction();
 };
 

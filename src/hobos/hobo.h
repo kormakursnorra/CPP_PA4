@@ -5,15 +5,24 @@
 // #include "items.h"
 
 #include <string>
+#include <memory>
+
+
 
 class Hobo {
-public:
+private:
     const std::string name;
-    static Zoo *zoo;
-    // static Items *items;   
+    std::unique_ptr<Zoo> zoo;
+    // std::unique_ptr<Item> *item;   
 
-    
-    void chooseAction();
+public:
+
+    Hobo(std::string name);
+    Zoo* getZoo() const;
+    // Item* getItem() const;
+    void selectCreature();
+    // void addItem(Item *item);   
+    virtual ~Hobo();
 };
 
 #endif

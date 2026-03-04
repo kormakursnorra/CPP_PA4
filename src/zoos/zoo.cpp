@@ -1,85 +1,94 @@
 #include "zoo.h"
-#include "hobos/player.h"
-#include "creature/creature.h"
-#include <stdexcept>
+#include "hobos/hobo.h"
+#include "creatures/creature.h"
 
 
-Zoo::Zoo(const Player *player) : player(player) {}
+Zoo::Zoo(const Hobo *zooKeeper, std::string name) 
+: zooKeeper(zooKeeper), name(name) {}
 
-int Zoo::insertNewMember(const Player *player, Creature *creature) {
-    if (this->player != player) {
-        return 0;
+bool Zoo::isOwner(const Hobo* caller) const {
+    return caller == zooKeeper; 
+}
+
+bool Zoo::insertNewMember(const Hobo *zooKeeper, Creature *creature) {
+    if (!isOwner(zooKeeper) || 
+        creatures.find(creature) == creatures.end()
+    ) {
+        return false;
     }
 
-    if (creatureMembers.find(creature) == creatureMembers.end()) {
-        return 0;
-    }
-    
-    creatureMembers.insert({creature, 1});
+    creatures.insert({creature, 1});
     if (starter == nullptr) {
         starter = creature; 
     }
 
     numMembers++;
     numAlive++;
-    return 1;
+    return true;
 }
 
-int Zoo::removeMember(const Player *player, Creature *creature) {
-    if (this->player != player) {
-        return 0;
-    }
- 
-    if (creatureMembers.erase(creature) == 0) {
-        return 0;
+bool Zoo::removeMember(const Hobo *zooKeeper, Creature *creature) {
+    if (!isOwner(zooKeeper) || 
+        creatures.find(creature) == creatures.end()
+    ) {
+        return false;
     }
     
     if (starter == creature) { 
         starter = nullptr;
     }
 
-    numMembers++;
-    numAlive++;
-    return 1;
+    numMembers--;
+    numAlive--;
+    return true;
 }
 
-int Zoo::changeStarter(const Player *player, Creature *creature) {
-    if (this->player != player) {
-        return 0;
-    }
-
-    if (creatureMembers.find(creature) == creatureMembers.end()) {
-        return 0;
+bool Zoo::changeStarter(const Hobo *zooKeeper, Creature *creature) {
+    if (!isOwner(zooKeeper) || 
+        creatures.find(creature) == creatures.end()
+    ) {
+        return false;
     }
     
     if (starter != creature) {
         starter = creature;
     }
     
-   return 1;
+   return true;
 }
 
-int Zoo::updateStatus(const Player *player, Creature *creature) {
-    if (this->player != player) {
-        return 0;
+bool Zoo::updateStatus(const Hobo *zooKeeper, Creature *creature) {
+    if (!isOwner(zooKeeper) || 
+        creatures.find(creature) == creatures.end()
+    ) {
+        return false;
     }
     
-    try {
-        int memberStatus = creatureMembers.at(creature);
-        if (memberStatus == 0) { 
-            memberStatus = 1; 
-        } else { 
-            memberStatus = 0; 
-        }
-        creatureMembers.at(creature) = memberStatus;
-        return 1;
-
-    } catch (std::out_of_range e) {
-        return 0;
+    int memberStatus = creatures.at(creature);
+    if (memberStatus == 0) { 
+        memberStatus = 1;
+        numAlive--; 
+    } else { 
+        memberStatus = 0;
+        numAlive--; 
     }
-
+    creatures.at(creature) = memberStatus;
+    return true;
 
 }
+
+int Zoo::getNumMembers(const Hobo *zooKeeper) {
+    if (!isOwner(zooKeeper)) {
+        return -1;
+    } return numMembers;
+}
+
+int Zoo::getNumAlive(const Hobo *zooKeeper) {
+    if (!isOwner(zooKeeper)) {
+        return -1;
+    } return numAlive;
+}
+
 
 Zoo::~Zoo() {
     
