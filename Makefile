@@ -11,11 +11,15 @@ TARGET_OBJECT := $(OBJ_DIR)/$(TARGET).o
 
 TARGET_GAME_SRC := src/game.cpp
 ENTITY_SRC := src/entity.cpp
-CHARACTER_SRC := src/character.cpp
+PLAYER_SRC := src/player.cpp
 ENEMY_SRC := src/enemy.cpp
 MOVE_SRC := src/move.cpp
+CREATURE_SRC := src/creature.cpp
+ZOO_SRC := src/zoo.cpp
 
-ALL_CLASS_SRCS := $(ENTITY_SRC) $(CHARACTER_SRC) $(ENEMY_SRC) $(MOVE_SRC)
+ENTITIES_SRCS := $(ENTITY_SRC) $(PLAYER_SRC) $(ENEMY_SRC) $(CREATURE_SRC)
+
+ALL_CLASS_SRCS := $(ENTITIES_SRCS) $(MOVE_SRC) $(ZOO_SRC)
 ALL_GAME_SRCS := $(TARGET_GAME_SRC) $(ALL_CLASS_SRCS)
 
 ALL_GAME_OBJECTS := $(ALL_GAME_SRCS:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)
@@ -39,7 +43,7 @@ $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)
 
 run-game: $(TARGET_BIN)
-	@echo "Running PokeMen exe."
+	@echo "Running Game exe."
 	./$(TARGET_BIN) $(ARGS)
 	
 clean: 
