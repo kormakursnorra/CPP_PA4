@@ -20,6 +20,8 @@ public:
     int getPower() const;
     bool hits() const;
     void display() const;
+    Status getEffect() const;
+    int getEffectChance() const;
 };
 
 #endif

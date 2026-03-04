@@ -17,6 +17,13 @@ Entity* Battle::whoGoesSecond() {
 int Battle::calcDmg(Entity* attacker, Move* move) {
     if (!move->hits()) return 0;
     int dmg = (attacker->getAttack() * move->getPower()) / 100;
+
+    bool crit = (rand() % 100) < 10;
+    if (crit) {
+        dmg *=2;
+        std::cout << "Critical hit!\n";
+    }
+
     return dmg;
 }
 
@@ -48,6 +55,13 @@ void Battle::doTurn(Entity* attacker, Entity* defender) {
         defender->takeDamage(dmg);
         std::cout << attacker->getName() << " used " << move->getName()
             << " dealing " << dmg << " damage!\n";
+
+        // check for status effects
+        if (move->getEffect() != NONE) {
+            if ((rand() % 100) < move->getEffectChance()) {
+                defender->setStatus(move->getEffect(), 3);
+            }
+        }
     }
 }
 
