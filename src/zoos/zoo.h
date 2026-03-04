@@ -20,8 +20,8 @@ private:
     
 public:
     std::string name;
-    int numMembers;
-    int numAlive;
+    uint8_t numMembers;
+    uint8_t numAlive;
 
     Zoo(const Hobo *player, std::string name);
     Creature *getCreature(const Hobo *player);
@@ -29,8 +29,8 @@ public:
     bool removeMember(const Hobo *player, Creature *creature);
     bool changeStarter(const Hobo *player, Creature *creature);
     bool updateStatus(const Hobo *player, Creature *creature);
-    int getNumMembers(const Hobo *player);
-    int getNumAlive(const Hobo *player);
+    uint8_t getNumMembers(const Hobo *player);
+    uint8_t getNumAlive(const Hobo *player);
     ~Zoo();
 };
 

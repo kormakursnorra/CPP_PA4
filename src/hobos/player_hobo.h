@@ -5,7 +5,7 @@
 
 class Player : public Hobo {
 public:
-    Player(std::string name);
+    Player(const std::string name);
     Move* chooseAction();
 };
 

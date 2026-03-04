@@ -1,6 +1,7 @@
 #include "zoo.h"
 #include "hobos/hobo.h"
 #include "creatures/creature.h"
+#include <cassert>
 
 
 Zoo::Zoo(const Hobo *zooKeeper, std::string name) 
@@ -11,9 +12,9 @@ bool Zoo::isOwner(const Hobo* caller) const {
 }
 
 bool Zoo::insertNewMember(const Hobo *zooKeeper, Creature *creature) {
-    if (!isOwner(zooKeeper) || 
-        creatures.find(creature) == creatures.end()
-    ) {
+    assert(isOwner(zooKeeper));
+    
+    if (creatures.find(creature) == creatures.end()) {
         return false;
     }
 
@@ -28,9 +29,9 @@ bool Zoo::insertNewMember(const Hobo *zooKeeper, Creature *creature) {
 }
 
 bool Zoo::removeMember(const Hobo *zooKeeper, Creature *creature) {
-    if (!isOwner(zooKeeper) || 
-        creatures.find(creature) == creatures.end()
-    ) {
+    assert(isOwner(zooKeeper));
+
+    if (creatures.find(creature) == creatures.end()) {
         return false;
     }
     
@@ -44,9 +45,9 @@ bool Zoo::removeMember(const Hobo *zooKeeper, Creature *creature) {
 }
 
 bool Zoo::changeStarter(const Hobo *zooKeeper, Creature *creature) {
-    if (!isOwner(zooKeeper) || 
-        creatures.find(creature) == creatures.end()
-    ) {
+    assert(isOwner(zooKeeper));
+    
+    if (creatures.find(creature) == creatures.end()) {
         return false;
     }
     
@@ -58,9 +59,9 @@ bool Zoo::changeStarter(const Hobo *zooKeeper, Creature *creature) {
 }
 
 bool Zoo::updateStatus(const Hobo *zooKeeper, Creature *creature) {
-    if (!isOwner(zooKeeper) || 
-        creatures.find(creature) == creatures.end()
-    ) {
+    assert(isOwner(zooKeeper));
+    
+    if (creatures.find(creature) == creatures.end()) {
         return false;
     }
     
@@ -77,16 +78,14 @@ bool Zoo::updateStatus(const Hobo *zooKeeper, Creature *creature) {
 
 }
 
-int Zoo::getNumMembers(const Hobo *zooKeeper) {
-    if (!isOwner(zooKeeper)) {
-        return -1;
-    } return numMembers;
+uint8_t Zoo::getNumMembers(const Hobo *zooKeeper) {
+    assert(isOwner(zooKeeper));
+    return numMembers;
 }
 
-int Zoo::getNumAlive(const Hobo *zooKeeper) {
-    if (!isOwner(zooKeeper)) {
-        return -1;
-    } return numAlive;
+uint8_t Zoo::getNumAlive(const Hobo *zooKeeper) {
+    assert(!isOwner(zooKeeper));
+    return numAlive;
 }
 
 
