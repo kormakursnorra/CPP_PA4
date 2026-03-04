@@ -1,6 +1,6 @@
 #include "zoo.h"
 #include "hobos/player.h"
-#include "creature.h"
+#include "creature/creature.h"
 #include <stdexcept>
 
 
