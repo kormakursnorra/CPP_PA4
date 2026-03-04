@@ -4,12 +4,12 @@ CXXFLAGS := -std=c++17 -Wall -Wextra -Werror -g
 SRC_DIR := src
 BIN_DIR := bin
 OBJ_DIR := obj
-TARGET := pokemen
+TARGET := game
 
 TARGET_BIN := $(BIN_DIR)/$(TARGET)
 TARGET_OBJECT := $(OBJ_DIR)/$(TARGET).o 
 
-TARGET_GAME_SRC := src/pokemen.cpp
+TARGET_GAME_SRC := src/game.cpp
 ENTITY_SRC := src/entity.cpp
 CHARACTER_SRC := src/character.cpp
 ENEMY_SRC := src/enemy.cpp
