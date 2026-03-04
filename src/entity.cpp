@@ -7,7 +7,7 @@ Entity::Entity(std::string name, int hp, int attack, int defense, int speed)
 
 void Entity::takeDamage(int dmg) {
     int actual = dmg - defense;
-    if (actual < 1) actual = 0;
+    if (actual < 1) actual = 1;
     hp -= actual;
     if (hp < 0) hp = 0;
 }
