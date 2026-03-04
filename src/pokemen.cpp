@@ -1,8 +1,8 @@
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
-#include "Character.h"
-#include "Enemy.h"
+#include "character.h"
+#include "enemy.h"
 
 int main() {
     srand(time(0));

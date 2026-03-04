@@ -1,0 +1,97 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-std=c++17",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-g",
+      "-I",
+      "src",
+      "-c",
+      "-o",
+      "obj/pokemen.o",
+      "src/pokemen.cpp"
+    ],
+    "directory": "/home/kormakur-snorrason/HR/Year2/Cpp/Assignments/PA4",
+    "file": "/home/kormakur-snorrason/HR/Year2/Cpp/Assignments/PA4/src/pokemen.cpp",
+    "output": "/home/kormakur-snorrason/HR/Year2/Cpp/Assignments/PA4/obj/pokemen.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-std=c++17",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-g",
+      "-I",
+      "src",
+      "-c",
+      "-o",
+      "obj/entity.o",
+      "src/entity.cpp"
+    ],
+    "directory": "/home/kormakur-snorrason/HR/Year2/Cpp/Assignments/PA4",
+    "file": "/home/kormakur-snorrason/HR/Year2/Cpp/Assignments/PA4/src/entity.cpp",
+    "output": "/home/kormakur-snorrason/HR/Year2/Cpp/Assignments/PA4/obj/entity.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-std=c++17",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-g",
+      "-I",
+      "src",
+      "-c",
+      "-o",
+      "obj/character.o",
+      "src/character.cpp"
+    ],
+    "directory": "/home/kormakur-snorrason/HR/Year2/Cpp/Assignments/PA4",
+    "file": "/home/kormakur-snorrason/HR/Year2/Cpp/Assignments/PA4/src/character.cpp",
+    "output": "/home/kormakur-snorrason/HR/Year2/Cpp/Assignments/PA4/obj/character.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-std=c++17",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-g",
+      "-I",
+      "src",
+      "-c",
+      "-o",
+      "obj/enemy.o",
+      "src/enemy.cpp"
+    ],
+    "directory": "/home/kormakur-snorrason/HR/Year2/Cpp/Assignments/PA4",
+    "file": "/home/kormakur-snorrason/HR/Year2/Cpp/Assignments/PA4/src/enemy.cpp",
+    "output": "/home/kormakur-snorrason/HR/Year2/Cpp/Assignments/PA4/obj/enemy.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-std=c++17",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-g",
+      "-I",
+      "src",
+      "-c",
+      "-o",
+      "obj/move.o",
+      "src/move.cpp"
+    ],
+    "directory": "/home/kormakur-snorrason/HR/Year2/Cpp/Assignments/PA4",
+    "file": "/home/kormakur-snorrason/HR/Year2/Cpp/Assignments/PA4/src/move.cpp",
+    "output": "/home/kormakur-snorrason/HR/Year2/Cpp/Assignments/PA4/obj/move.o"
+  }
+]

@@ -1,7 +1,7 @@
 #ifndef CHARACTER_H
 #define CHARACTER_H
 
-#include "Entity.h"
+#include "entity.h"
 
 class Character : public Entity {
 public:
