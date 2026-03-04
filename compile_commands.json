@@ -11,12 +11,12 @@
       "src",
       "-c",
       "-o",
-      "obj/pokemen.o",
-      "src/pokemen.cpp"
+      "obj/game.o",
+      "src/game.cpp"
     ],
     "directory": "/home/kormakur-snorrason/HR/Year2/Cpp/Assignments/PA4",
-    "file": "/home/kormakur-snorrason/HR/Year2/Cpp/Assignments/PA4/src/pokemen.cpp",
-    "output": "/home/kormakur-snorrason/HR/Year2/Cpp/Assignments/PA4/obj/pokemen.o"
+    "file": "/home/kormakur-snorrason/HR/Year2/Cpp/Assignments/PA4/src/game.cpp",
+    "output": "/home/kormakur-snorrason/HR/Year2/Cpp/Assignments/PA4/obj/game.o"
   },
   {
     "arguments": [
