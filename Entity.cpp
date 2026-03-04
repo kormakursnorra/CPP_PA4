@@ -11,3 +11,40 @@ void Entity::takeDamage(int dmg) {
     hp -= actual;
     if (hp < 0) hp = 0;
 }
+
+bool Entity::isAlive() const {
+    return hp > 0;
+}
+
+void Entity::displayStatus() const {
+    std::cout << name << " (" << hp << "/" << maxHp << ")";
+}
+
+void Entity::displayMoves() const {
+    for (int i = 0; i < moveCount; i++) {
+        std::cout << i + 1 << ". ";
+        moves[i].display();
+    }
+}
+
+void Entity::addMove(Move move) {
+    if (moveCount <4) {
+        moves[moveCount] = move;
+        moveCount++;
+    }
+}
+
+std::string Entity::getName() const {
+    return name;
+}
+
+int Entity::getSpeed() const {
+    return speed;
+}
+
+int Entity::getAttack() const {
+    return attack;
+}
+int Entity::getDefense() const {
+    return defense;
+}
