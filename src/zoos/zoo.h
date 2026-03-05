@@ -5,37 +5,39 @@
 
 #include <sys/types.h>
 #include <unordered_map>
-#include <cstdint>
 
 class Hobo;
+class Battle;
 
-typedef std::unordered_map<uint8_t, Creature *> CreatureMap;
+typedef std::unordered_map<int, Creature *> CreatureMap;
 
 class Zoo {
 private:
     const Hobo* zooKeeper;
     CreatureMap creatures;
     Creature *starter;
-    uint8_t maxMembers;
+    int maxMembers;
     
     bool isOwner(const Hobo* caller) const;
-    bool isMember(uint8_t creatureKey) const;
+    bool isMember(int creatureKey) const;
     
 public:
     std::string name;
-    uint8_t numMembers;
-    uint8_t numAlive;
+    int numMembers;
+    int numAlive;
 
-    Zoo(const Hobo *zooKeeper, std::string name);
+    Zoo(const Hobo *zooKeeper, std::string zooName);
     CreatureMap* getZoo(const Hobo *zooKeeper);
-    Creature* getCreature(const Hobo *zooKeeper, uint8_t creatureKey);
+    Creature* getCreature(const Hobo *zooKeeper, int creatureKey);
     bool insertNewMember(const Hobo *zooKeeper, Creature *creature);
-    bool removeMember(const Hobo *zooKeeper, uint8_t creatureKey);
-    bool changeStarter(const Hobo *zooKeeper, uint8_t creatureKey);
-    bool updateStatus(const Hobo *zooKeeper, uint8_t creatureKey);
-    uint8_t getNumMembers(const Hobo *zooKeeper);
-    uint8_t getNumAlive(const Hobo *zooKeeper);
+    bool removeMember(const Hobo *zooKeeper, int creatureKey);
+    bool changeStarter(const Hobo *zooKeeper, int creatureKey);
+    bool updateStatus(const Hobo *zooKeeper, int creatureKey);
+    int getNumMembers(const Hobo *zooKeeper);
+    int getNumAlive(const Hobo *zooKeeper);
     ~Zoo();
+
+    friend class Battle;
 };
 
 #endif

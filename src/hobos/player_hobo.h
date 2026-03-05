@@ -5,8 +5,8 @@
 
 class PlayerHobo : public Hobo {
 public:
-    PlayerHobo(const std::string name);
-    Move* chooseAction();
+    PlayerHobo(const std::string hoboName, std::string zooName);
+    int nextAction();
 };
 
 #endif
