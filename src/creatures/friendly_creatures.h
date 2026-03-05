@@ -2,10 +2,13 @@
 #define FRIENDLY_CREATURE_H
 
 #include "creatures/creature.h"
+#include <cstdint>
 
 class FriendlyCreature : public Creature {
 public: 
-    FriendlyCreature(std::string name, int hp, int attack, int defense, int speed);
+    FriendlyCreature(std::string name, uint8_t hp, 
+        uint8_t attack, uint8_t defense, uint8_t speed
+    );
     Move* nextAction();
 };
 

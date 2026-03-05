@@ -1,10 +1,12 @@
 #include "creatures/friendly_creatures.h"
 
+#include <cstdint>
 #include <cstdlib>
 #include <iostream>
 
-FriendlyCreature::FriendlyCreature(std::string name, int hp, int attack, int defense, int speed)
-    : Creature(name, hp, attack, defense, speed) {}
+FriendlyCreature::FriendlyCreature(std::string name, uint8_t hp, 
+    uint8_t attack, uint8_t defense, uint8_t speed
+) : Creature(name, hp, attack, defense, speed) {}
 
 Move* FriendlyCreature::nextAction() {
     int choice = rand() % moveCount;

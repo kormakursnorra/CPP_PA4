@@ -4,53 +4,46 @@
 #include "creatures/move.h"
 
 #include <string>
-#include <functional>
+#include <cstdint>
 
 class Creature {
 protected:
     std::string name;
-    int hp;
-    int maxHp;
-    int attack;
-    int defense;
-    int speed;
+    uint8_t hp;
+    uint8_t maxHp;
+    uint8_t attack;
+    uint8_t defense;
+    uint8_t speed;
     Move moves[4];
-    int moveCount;
+    uint8_t moveCount;
     Status status;
-    int statusDuration;
+    uint8_t statusDuration;
 
 
 public:
-    Creature(std::string name, int hp, int attack, int defense, int speed);
+    Creature(std::string name, uint8_t hp, 
+        uint8_t attack, uint8_t defense, uint8_t speed
+    );
 
     bool operator==(const Creature &other) const;
 
-    void takeDamage(int dmg);
+    void takeDamage(uint8_t dmg);
     bool isAlive() const;
     void displayStatus() const;
     void displayMoves() const;
     void addMove(Move move);
-    void setStatus(Status s, int duration);
+    void setStatus(Status s, uint8_t duration);
     void applyStatusEffect();
     std::string getStatusName() const;
 
     std::string getName() const;
-    int getSpeed() const;
-    int getAttack() const;
-    int getDefense() const;
+    uint8_t getSpeed() const;
+    uint8_t getAttack() const;
+    uint8_t getDefense() const;
     Status getStatus() const;
 
     virtual Move* chooseAction() = 0; // virtual shits dawg
     virtual ~Creature() {}
 };
-
-namespace std {
-    template <> struct hash<Creature> {
-        size_t operator()(const Creature &creature) const {
-            size_t hash_name = hash<std::string>{}(creature.getName());
-            return hash_name;
-        }
-    };
-}
 
 #endif
