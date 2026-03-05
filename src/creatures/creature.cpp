@@ -122,3 +122,7 @@ int Creature::getDefense() const {
 Status Creature::getStatus() const {
     return status;
 }
+
+Move* Creature::getMove(int moveKey) {
+    return &moves[moveKey];
+}

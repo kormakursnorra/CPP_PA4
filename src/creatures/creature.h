@@ -4,7 +4,7 @@
 #include "creatures/move.h"
 
 #include <string>
-#include <cstdint>
+
 
 class Creature {
 protected:
