@@ -1,82 +1,91 @@
-#include "zoo.h"
+#include "zoos/zoo.h"
 #include "hobos/hobo.h"
 #include "creatures/creature.h"
 #include <cassert>
+#include <cstdint>
 
 
 Zoo::Zoo(const Hobo *zooKeeper, std::string name) 
-: zooKeeper(zooKeeper), name(name) {}
+: zooKeeper(zooKeeper), name(name) {
+    maxMembers = 6;
+}
+
 
 bool Zoo::isOwner(const Hobo* caller) const {
     return caller == zooKeeper; 
 }
 
+bool Zoo::isMember(uint8_t creatureKey) const {
+    return creatures.count(creatureKey) > 0; 
+}
+
+Creature* Zoo::getCreature(const Hobo *zooKeeper, uint8_t creatureKey) {
+    assert(isOwner(zooKeeper));
+    assert(isMember(creatureKey));
+
+    return creatures.at(creatureKey);
+}
+
+CreatureMap* Zoo::getZoo(const Hobo *zooKeeper) {
+    assert(isOwner(zooKeeper));
+    return &creatures;
+}
+
 bool Zoo::insertNewMember(const Hobo *zooKeeper, Creature *creature) {
     assert(isOwner(zooKeeper));
     
-    if (creatures.find(creature) == creatures.end()) {
-        return false;
+    if (numMembers == maxMembers) { 
+        return false; 
     }
-
-    creatures.insert({creature, 1});
-    if (starter == nullptr) {
-        starter = creature; 
-    }
+    
+    creatures.insert(
+        {numMembers + 1, creature}
+    );
 
     numMembers++;
     numAlive++;
     return true;
 }
 
-bool Zoo::removeMember(const Hobo *zooKeeper, Creature *creature) {
+bool Zoo::removeMember(const Hobo *zooKeeper, uint8_t creatureKey) {
     assert(isOwner(zooKeeper));
+    assert(isMember(creatureKey));
 
-    if (creatures.find(creature) == creatures.end()) {
-        return false;
-    }
-    
-    if (starter == creature) { 
-        starter = nullptr;
-    }
+    creatures.erase(creatureKey);
+
+    assert(creatures.count(creatureKey) == 0);
 
     numMembers--;
     numAlive--;
     return true;
 }
 
-bool Zoo::changeStarter(const Hobo *zooKeeper, Creature *creature) {
+bool Zoo::changeStarter(const Hobo *zooKeeper, uint8_t creatureKey) {
     assert(isOwner(zooKeeper));
+    assert(isMember(creatureKey));
     
-    if (creatures.find(creature) == creatures.end()) {
-        return false;
-    }
-    
-    if (starter != creature) {
-        starter = creature;
-    }
-    
-   return true;
-}
+    Creature *creature = creatures.at(creatureKey);
+    assert(creature == starter);
+    starter = creature;
 
-bool Zoo::updateStatus(const Hobo *zooKeeper, Creature *creature) {
-    assert(isOwner(zooKeeper));
-    
-    if (creatures.find(creature) == creatures.end()) {
-        return false;
-    }
-    
-    int memberStatus = creatures.at(creature);
-    if (memberStatus == 0) { 
-        memberStatus = 1;
-        numAlive--; 
-    } else { 
-        memberStatus = 0;
-        numAlive--; 
-    }
-    creatures.at(creature) = memberStatus;
     return true;
-
 }
+
+bool Zoo::updateStatus(const Hobo *zooKeeper,  uint8_t creatureKey) {
+    assert(isOwner(zooKeeper));
+    assert(isMember(creatureKey));
+        
+    Creature *creature = creatures.at(creatureKey);
+    
+    if (creature->isAlive()) {
+        numAlive++;
+    } else {
+        numAlive--;
+    }
+    
+    return true;
+}
+
 
 uint8_t Zoo::getNumMembers(const Hobo *zooKeeper) {
     assert(isOwner(zooKeeper));
