@@ -2,7 +2,7 @@
 #include <iostream>
 
 Creature::Creature(
-    std::string name, uint8_t hp, uint8_t attack, uint8_t defense, uint8_t speed
+    std::string name, int hp, int attack, int defense, int speed
 ) : name(name), hp(hp), maxHp(hp), attack(attack),
     defense(defense), speed(speed), moveCount(0),
     status(NONE), statusDuration(0) {}
@@ -11,8 +11,8 @@ bool Creature::operator==(const Creature &other) const {
     return (name == other.name);
 }
 
-void Creature::takeDamage(uint8_t dmg) {
-    uint8_t actual = (uint8_t)(((rand() % 5) + dmg) * (100 - defense) / 100);
+void Creature::takeDamage(int dmg) {
+    int actual = (int)(((rand() % 5) + dmg) * (100 - defense) / 100);
     if (actual < 1) {
         actual = 1;
     }
@@ -31,7 +31,7 @@ void Creature::displayStatus() const {
 }
 
 void Creature::displayMoves() const {
-    for (uint8_t i = 0; i < moveCount; i++) {
+    for (int i = 0; i < moveCount; i++) {
         std::cout << i + 1 << ". ";
         moves[i].display();
     }
@@ -44,7 +44,7 @@ void Creature::addMove(Move move) {
     }
 }
 
-void Creature::setStatus(Status s, uint8_t duration) {
+void Creature::setStatus(Status s, int duration) {
     if (status != NONE) {
         return;
     }
@@ -70,7 +70,7 @@ void Creature::applyStatusEffect() {
 
     switch (status) {
         case INFECTED: {
-            uint8_t dmg = maxHp * 0.10;
+            int dmg = maxHp * 0.10;
             hp -= dmg;
             if (hp < 0) {
                 hp = 0;
@@ -83,7 +83,7 @@ void Creature::applyStatusEffect() {
             break; 
         }
         case BURNED: {
-            uint8_t bdmg = maxHp * 0.05;
+            int bdmg = maxHp * 0.05;
             hp -= bdmg;
             if (hp < 0) {
                 hp = 0;
@@ -107,15 +107,15 @@ std::string Creature::getName() const {
     return name;
 }
 
-uint8_t Creature::getSpeed() const {
+int Creature::getSpeed() const {
     return speed;
 }
 
-uint8_t Creature::getAttack() const {
+int Creature::getAttack() const {
     return attack;
 }
 
-uint8_t Creature::getDefense() const {
+int Creature::getDefense() const {
     return defense;
 }
 

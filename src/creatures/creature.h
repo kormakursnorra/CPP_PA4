@@ -9,37 +9,37 @@
 class Creature {
 protected:
     std::string name;
-    uint8_t hp;
-    uint8_t maxHp;
-    uint8_t attack;
-    uint8_t defense;
-    uint8_t speed;
+    int hp;
+    int maxHp;
+    int attack;
+    int defense;
+    int speed;
     Move moves[4];
-    uint8_t moveCount;
+    int moveCount;
     Status status;
-    uint8_t statusDuration;
+    int statusDuration;
 
 
 public:
-    Creature(std::string name, uint8_t hp, 
-        uint8_t attack, uint8_t defense, uint8_t speed
+    Creature(std::string name, int hp, 
+        int attack, int defense, int speed
     );
 
     bool operator==(const Creature &other) const;
 
-    void takeDamage(uint8_t dmg);
+    void takeDamage(int dmg);
     bool isAlive() const;
     void displayStatus() const;
     void displayMoves() const;
     void addMove(Move move);
-    void setStatus(Status s, uint8_t duration);
+    void setStatus(Status s, int duration);
     void applyStatusEffect();
     std::string getStatusName() const;
 
     std::string getName() const;
-    uint8_t getSpeed() const;
-    uint8_t getAttack() const;
-    uint8_t getDefense() const;
+    int getSpeed() const;
+    int getAttack() const;
+    int getDefense() const;
     Status getStatus() const;
 
     virtual Move* chooseAction() = 0; // virtual shits dawg
