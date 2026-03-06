@@ -1,7 +1,5 @@
 #include <cstdlib>
 #include <ctime>
-#include "player.h"
-#include "enemy.h"
 #include "battle.h"
 #include "boss.h"
 
