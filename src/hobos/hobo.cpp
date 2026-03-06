@@ -14,27 +14,45 @@ const std::string randZooName(uint8_t randNum) {
     return "Enemy Zoo " + std::to_string(randNum);
 }
 
-Hobo::Hobo(const std::string name, std::string zooName) : name(name) {
-    zoo = upZoo(new Zoo(this, zooName));
-    numCreatures = zoo->getNumMembers(this);
-    // items = Inventory;
+Hobo::Hobo(const std::string name, std::string zooName) 
+: name(name), alchohol_meter(0) {
+    zoo = std::make_unique<Zoo>(this, zooName);
+    numCreatures = zoo->getNumContents(this);
+    // inventory = Inventory;
     // booze = std::unique_ptr<Item>( 
         // new Item(this, zooName)
     // );
-    // numItems = zoo->getNumMembers(this);
-    alchohol_meter = 0;
+    // numItems = zoo->getNumContents(this);
 }
 
-upZoo& Hobo::getZoo() {
-    return zoo;
+Zoo& Hobo::getZoo() const {
+    return *zoo;
 };
 
-void Hobo::addCreature() {
-    // Creature *newCreature = new Creature();
-    return;
+// Inventory& Hobo::getInventory() const {
+//     return *inventory;
+// };
+
+std::string Hobo::getName() const {
+    return name;
 }
+
+int Hobo::getNumCreatures() const {
+    return zoo->getNumContents(this);
+}
+
+// int Hobo::getNumItems() const {
+//     return inventory->getNumContents(this);
+// }
+
+void Hobo::addCreature(Creature *creature) {
+    zoo->insert(this, creature);
+}
+
+// void Hobo::addItem(Item *item) {
+//     inventory->insert(this, item);
+// }
 
 void Hobo::drinkAlchohol() {
     return;
 }
-

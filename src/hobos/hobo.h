@@ -1,38 +1,46 @@
 #ifndef HOBO_H
 #define HOBO_H
 
-#include "zoos/zoo.h"
-// #include "items.h"
+#include "creatures/creature.h"
+#include "stash/inventory.h"
+#include "hobos/actions.h"
+// #include "stash/items.h"
+#include "stash/zoo.h"
 
 #include <string>
 #include <memory>
 
 
-// typedef std::unique_ptr<Inventory> upInventory;
-typedef std::unique_ptr<Zoo> upZoo;
 
 class Hobo {
 protected:
     const std::string name;
-    
-    upZoo zoo;
+    std::unique_ptr<Zoo> zoo;
     int numCreatures;
-    // Inventory *items;
+    // std::unique_ptr<Inventory> inventory;
     // std::unique_ptr<Item> booze;
     int numItems;
     
+    int alchohol_meter;
     
 public:
-    int alchohol_meter;
+
     Hobo(const std::string hoboName, std::string zooName);
-    upZoo& getZoo();
-    // Item* getItems() const;
+    Zoo& getZoo() const;
+    // Inventory& getItems() const;
+    std::string getName() const;
+    int getNumCreatures() const;
+    int getNumItems() const;
     // void addItem(Item *item);
+    void addCreature(Creature *creature);
+    // void selectItem(int itemKey);
+    // void selectCreature();
     // void useItem(Item *item);   
-    void addCreature();
     void drinkAlchohol();
-    virtual int nextAction();
+    virtual Action nextAction(Creature *active);
     virtual ~Hobo();
+
+    friend class Battle;
 };
 
 #endif
