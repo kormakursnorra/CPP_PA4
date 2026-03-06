@@ -12,20 +12,19 @@ private:
     Creature *starter;
     
 protected:
+    std::string name;
+    int numAlive;
+    
     void onInsert(Creature *creature) override;
     void onRemove(Creature *creature) override;
 
 public:
-    std::string name;
-    int numAlive;
 
     Zoo(const Hobo *zooKeeper, std::string zooName);
     bool changeStarter(const Hobo *zooKeeper, int creatureKey);
     bool updateStatus(const Hobo *zooKeeper, int creatureKey);
     int getNumAlive(const Hobo *zooKeeper) const;
     ~Zoo();
-
-    friend class Battle;
 };
 
 #endif

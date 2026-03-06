@@ -39,7 +39,7 @@ public:
         return &contents;
     }
     
-    T* getStashItem(const Hobo *stashOwner, int contentKey) {
+    T getStashItem(const Hobo *stashOwner, int contentKey) {
         assert(isOwner(stashOwner));
         assert(isInStash(contentKey));
 
@@ -51,7 +51,7 @@ public:
         return numContents;
     }
     
-    bool insert(const Hobo *stashOwner, T* newItem) {
+    bool insert(const Hobo *stashOwner, T newItem) {
         assert(isOwner(stashOwner));
         if (numContents == maxContents) {
             return false;
@@ -68,7 +68,7 @@ public:
         assert(isInStash(contentKey));
         assert(maxContents > 0);
         
-        contents.rease(contentKey);
+        contents.erase(contentKey);
         numContents--;
         return true;
     }
