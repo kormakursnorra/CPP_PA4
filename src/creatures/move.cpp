@@ -33,3 +33,7 @@ Status Move::getEffect() const {
 int Move::getEffectChance() const {
     return effectChance;
 }
+
+int Move::getAccuracy() const {
+    return accuracy;
+}

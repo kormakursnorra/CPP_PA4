@@ -22,6 +22,7 @@ public:
     void display() const;
     Status getEffect() const;
     int getEffectChance() const;
+    int getAccuracy() const;
 };
 
 #endif
