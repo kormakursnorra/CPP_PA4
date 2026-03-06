@@ -1,0 +1,53 @@
+#include "stash/zoo.h"
+#include "creatures/creature.h"
+#include <cassert>
+
+
+Zoo::Zoo(const Hobo *zooKeeper, std::string name) 
+: Stash<Creature *>(zooKeeper), name(name), numAlive(0) {}
+
+
+void Zoo::onInsert(Creature *creature) {
+    if (numContents == 1) { starter = creature; }
+    numAlive++;
+}
+
+void Zoo::onRemove(Creature *creature) {
+    if (starter == creature) { starter = nullptr; }
+    numAlive--;
+}
+
+bool Zoo::changeStarter(const Hobo *zooKeeper, int creatureKey) {
+    assert(isOwner(zooKeeper));
+    assert(isInStash(creatureKey));
+    
+    Creature *creature = contents.at(creatureKey);
+    starter = creature;
+    return true;
+}
+
+bool Zoo::updateStatus(const Hobo *zooKeeper,  int creatureKey) {
+    assert(isOwner(zooKeeper));
+    assert(isInStash(creatureKey));
+        
+    Creature *creature = contents.at(creatureKey);
+    
+    if (creature->isAlive()) {
+        numAlive++;
+    } else {
+        assert(numAlive != 0);
+        numAlive--;
+    }
+    
+    return true;
+}
+
+int Zoo::getNumAlive(const Hobo *zooKeeper) const {
+    assert(isOwner(zooKeeper));
+    return numAlive;
+}
+
+
+Zoo::~Zoo() {
+    
+}
