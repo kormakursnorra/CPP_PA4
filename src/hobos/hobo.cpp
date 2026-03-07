@@ -15,7 +15,7 @@ const std::string randZooName(uint8_t randNum) {
 }
 
 Hobo::Hobo(const std::string name, std::string zooName) 
-: name(name), alchohol_meter(0) {
+: name(name), alchoholMeter(0) {
     zoo = std::make_unique<Zoo>(this, zooName);
     numCreatures = zoo->getNumContents(this);
     // inventory = Inventory;

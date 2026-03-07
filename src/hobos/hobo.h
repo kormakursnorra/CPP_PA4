@@ -6,6 +6,7 @@
 #include "hobos/actions.h"
 // #include "stash/items.h"
 #include "stash/zoo.h"
+#include "ui/display_menu.h"
 
 #include <string>
 #include <memory>
@@ -18,10 +19,10 @@ protected:
     std::unique_ptr<Zoo> zoo;
     int numCreatures;
     // std::unique_ptr<Inventory> inventory;
-    // std::unique_ptr<Item> booze;
     int numItems;
+    // std::unique_ptr<Item> booze;
+    int alchoholMeter;
     
-    int alchohol_meter;
     
 public:
 

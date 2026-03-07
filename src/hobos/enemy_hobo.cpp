@@ -1,4 +1,6 @@
 #include "hobos/enemy_hobo.h"
+#include "creatures/creature.h"
+#include "hobos/actions.h"
 
 #include <cstdlib>
 #include <iostream>
@@ -11,22 +13,15 @@ EnemyHobo::EnemyHobo(const std::string enemyName, std::string zooName)
     fillZoo();
     fillInventory();
     
-    lastAction = -1;
-    numInitActions = 1;
-    numItems = zoo->getNumMembers(this) + 1;
-    numCreatures = zoo->getNumMembers(this);
+
+    numCreatures = zoo->getNumContents(this);
+    // numItems = inventory->getNumContents(this) + 1;
 }
 
 void EnemyHobo::fillZoo() const {
     return;
 }
 
-int EnemyHobo::nextAction() {
-    int action = 0;
-    if (lastAction == -1) {
-        action = rand() % numInitActions;
-    }
-    assert(0 == action || action == 1);
-    lastAction = action;
-    return action;
+Action EnemyHobo::nextAction(Creature *active) {
+       
 }

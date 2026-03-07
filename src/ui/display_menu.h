@@ -1,10 +1,9 @@
 #ifndef DISPLAY_MENU_H
 #define DISPLAY_MENU_H
 
-#include "creatures/creature.h"
-#include "creatures/move.h"
-#include "hobos/actions.h"
-#include "stash/zoo.h"
+#include "creatures/status.h"
+
+#include <string>
 #include <vector>
 
 
