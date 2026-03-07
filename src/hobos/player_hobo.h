@@ -1,13 +1,13 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include "hobos/actions.h"
-#include "hobos/hobo.h"
+#include "hobo.h"
+#include "actions.h"
 
 class PlayerHobo : public Hobo {
 public:
     PlayerHobo(const std::string hoboName, std::string zooName);
-    Action nextAction(Creature *active, const BattleContext& context) override;
+    Action nextAction(Creature *active, BattleContext &context) override;
 };
 
 #endif

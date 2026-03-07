@@ -1,6 +1,7 @@
-#include "creatures/move.h"
 #include <cstdlib>
 #include <iostream>
+
+#include "move.h"
 
 Move::Move() : name(""), power(0), accuracy(100) {}
 

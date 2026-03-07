@@ -1,11 +1,12 @@
-#include "ui/display_menu.h"
-#include "ui/tui.h"
-
-#include <iostream>
+#include <vector>
+#include <limits>
 #include <sstream>
 #include <iomanip>
-#include <limits>
-#include <vector>
+#include <iostream>
+
+#include "tui.h"
+#include "display_menu.h"
+
 
 
 DisplayMenu::DisplayMenu(const BattleContext &context) 
@@ -54,11 +55,11 @@ int DisplayMenu::showBattleMenu() {
         int choice = tui::readInt(1, 5);
 
         switch (choice) {
-            case 1: { int ret = _showMoveMenu(); if (ret != 0) { return 1; break; } }
-            case 2: { int ret = _showItemMenu(); if (ret != 0) { return 2; break; } }
-            case 3: { int ret = _showBoozeMenu(); if (ret != 0) { return 3; break; } }
-            case 4: { int ret = _showSwapMenu(); if (ret != 0) { return 4; break; } }
-            case 5: { _showInfoMenu(); break; }
+            case 1: { int ret = _showMoveMenu();  if (ret != 0) { return 1; } continue; }
+            case 2: { int ret = _showItemMenu();  if (ret != 0) { return 2; } continue; }
+            case 3: { int ret = _showBoozeMenu(); if (ret != 0) { return 3; } continue; }
+            case 4: { int ret = _showSwapMenu();  if (ret != 0) { return 4; } continue; }
+            case 5: { _showInfoMenu(); continue; }
         }
     }
 }

@@ -1,7 +1,7 @@
 #ifndef MOVE_H
 #define MOVE_H
 
-#include "creatures/status.h"
+#include "status.h"
 #include <string>
 
 class Move {

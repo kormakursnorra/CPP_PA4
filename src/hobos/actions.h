@@ -1,10 +1,10 @@
 #ifndef ACTIONS_H
 #define ACTIONS_H
 
-#include "creatures/creature.h"
-#include "creatures/move.h"
 #include <variant>
 
+#include "creatures/move.h"
+#include "creatures/creature.h"
 
 struct UseMove { Move *move; };
 

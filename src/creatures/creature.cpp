@@ -1,5 +1,6 @@
-#include "creatures/creature.h"
 #include <iostream>
+
+#include "creatures/creature.h"
 
 Creature::Creature(
     std::string name, int hp, int attack, int defense, int speed
@@ -105,6 +106,14 @@ void Creature::applyStatusEffect() {
 
 std::string Creature::getName() const {
     return name;
+}
+
+int Creature::getHp() const {
+    return hp;
+}
+
+int Creature::getMaxHp() const {
+    return maxHp;
 }
 
 int Creature::getSpeed() const {

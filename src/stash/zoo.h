@@ -1,10 +1,10 @@
 #ifndef ZOO_H
 #define ZOO_H
 
-#include "creatures/creature.h"
-#include "stash/stash.h"
-
 #include <sys/types.h>
+
+#include "stash.h"
+#include "creatures/creature.h"
 
 class Zoo : public Stash<Creature*> {
 private:

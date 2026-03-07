@@ -1,9 +1,9 @@
 #ifndef STASH_H
 #define STASH_H
 
+#include <cassert>
 #include <sys/types.h>
 #include <unordered_map>
-#include <cassert>
 
 class Hobo;
 class Battle;
@@ -34,9 +34,9 @@ public:
     Stash(const Hobo *stashOwner) 
     : stashOwner(stashOwner), maxContents(6), numContents(0) {} 
 
-    ContentMap* getStash(const Hobo *stashOwner) const {
+    const ContentMap* getStash(const Hobo *stashOwner) const {
         assert(isOwner(stashOwner));
-        return const_cast<T> (&contents);
+        return &contents;
     }
     
     T getStashItem(const Hobo *stashOwner, int contentKey) const {
@@ -73,7 +73,7 @@ public:
         return true;
     }
     
-    virtual ~Stash();
+    virtual ~Stash() {}
 
     friend class Battle;
     friend class Hobo;

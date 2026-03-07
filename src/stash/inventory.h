@@ -1,8 +1,9 @@
 #ifndef INVENTORY_H
 #define INVENTORY_H
 
-#include "stash/stash.h"
 #include <unordered_map>
+
+#include "stash.h"
 
 // class Inventory : public Stash<Item*> {
 

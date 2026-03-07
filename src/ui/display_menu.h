@@ -1,10 +1,10 @@
 #ifndef DISPLAY_MENU_H
 #define DISPLAY_MENU_H
 
-#include "creatures/status.h"
-
 #include <string>
 #include <vector>
+
+#include "creatures/status.h"
 
 class Battle;
 

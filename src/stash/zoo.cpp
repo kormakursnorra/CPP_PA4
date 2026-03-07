@@ -1,8 +1,7 @@
-#include "creatures/creature.h"
-#include "stash/zoo.h"
-
 #include <cassert>
 
+#include "zoo.h"
+#include "creatures/creature.h"
 
 Zoo::Zoo(const Hobo *zooKeeper, std::string name) 
 : Stash<Creature *>(zooKeeper), name(name), numAlive(0) {}
@@ -60,6 +59,4 @@ bool Zoo::updateStatus(const Hobo *zooKeeper,  int creatureKey) {
 
 
 
-Zoo::~Zoo() {
-    
-}
+Zoo::~Zoo() {}

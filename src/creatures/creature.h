@@ -1,7 +1,7 @@
 #ifndef CREATURE_H
 #define CREATURE_H
 
-#include "creatures/move.h"
+#include "move.h"
 
 #include <string>
 
@@ -37,6 +37,8 @@ public:
     std::string getStatusName() const;
 
     std::string getName() const;
+    int getHp() const;
+    int getMaxHp() const;
     int getSpeed() const;
     int getAttack() const;
     int getDefense() const;

@@ -1,8 +1,8 @@
-#include "ui/tui.h"
-
-#include <iostream>
-#include <sstream>
 #include <limits>
+#include <sstream>
+#include <iostream>
+
+#include "tui.h"
 
 namespace tui {
     void clearScreen() {
