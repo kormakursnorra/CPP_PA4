@@ -1,4 +1,4 @@
-#include "hobos/boss.h"
+#include "boss.h"
 
 
 Boss::Boss(const std::string name, std::string zooName)
@@ -9,7 +9,7 @@ Boss::Boss(const std::string name, std::string zooName)
 //     return ;
 // }
 
-Move* Boss::nextAction() {
+// Move* Boss::nextAction() {
     // check if boss is mad
     // if (!enraged && hp < maxHp / 2) {
     //     enraged = true;
@@ -23,4 +23,4 @@ Move* Boss::nextAction() {
     // }
 
     // return Enemy::chooseAction();
-}
+// }
