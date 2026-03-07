@@ -7,7 +7,8 @@
 class PlayerHobo : public Hobo {
 public:
     PlayerHobo(const std::string hoboName, std::string zooName);
-    Action nextAction(Creature *active, BattleContext &context) override;
+    Action nextAction(Creature *active, 
+        const BattleContext &ctx, BattleMenu &menu) override;
 };
 
 #endif

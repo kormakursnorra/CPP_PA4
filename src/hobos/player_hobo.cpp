@@ -1,81 +1,72 @@
-#include "hobos/player_hobo.h"
+#include "player_hobo.h"
+#include "actions.h"
+#include "battle.h"
+#include "ui/battle_menu.h"
 #include "creatures/creature.h"
-#include "ui/display_menu.h"
-#include "hobos/hobo.h"
 
-#include <cstdlib>
-#include <iostream>
 
 PlayerHobo::PlayerHobo(const std::string hoboName, std::string zooName) 
 : Hobo(hoboName, zooName) {}
 
-static CreatureInfo makeCreatureInfo(Creature *creature, bool isActive) {
-    CreatureInfo info;
-    info.name       = creature->getName();
-    info.hp         = 0;
-    info.maxHp      = 1;
-    info.attack     = creature->getAttack();
-    info.defense    = creature->getDefense();
-    info.speed      = creature->getSpeed();
-    info.status     = creature->getStatus();
-    info.statusName = creature->getStatusName();
-    info.alive      = creature->isAlive();
-    info.isActive   = isActive;
+Action PlayerHobo::nextAction(Creature *active, 
+    const BattleContext &context, BattleMenu &menu) {
 
-    for (int i = 1; i <= 4; ++i) {
-        Move* move = creature->getMove(i);
-        if (!move) { continue; }
-        MoveInfo moveInfo;
-        moveInfo.name         = move->getName();
-        moveInfo.power        = move->getPower();
-        moveInfo.effect       = move->getEffect();
-        moveInfo.accuracy     = move->getAccuracy();
-        moveInfo.effectChance = move->getEffectChance();
-        info.moves.push_back(moveInfo);
-    }
+    while (true) {
+        int topChoice = menu.showBattleMenu(context);
+        _choiceCtx = ChoiceContext{};
 
-    return info;
-}
+        switch (topChoice) {
 
-Action PlayerHobo::nextAction(Creature *active) {
-    MenuContext context;
-    bool isActive       = false;
-    context.playerName  = name;
-    context.enemyName   = "???";
-    context.active      = makeCreatureInfo(active, isActive);
+            case 1: {
+                int moveIdx = menu.promptMoveMenu(context);
+                if (moveIdx == 0) continue;   // back
 
-    auto *stashContents = zoo->getStash(this);
-    for (auto& [key, creature] : *stashContents) {
-        if (creature == active) {
-            isActive = true;
+                Move *move = active->getMove(moveIdx - 1);
+                if (!move) continue;
+
+                _choiceCtx.lastMoveChoice = moveIdx;
+                _lastAction = UseMove{ move };
+                return _lastAction;
+            }
+
+            case 2: {
+                int itemIdx = menu.promptItemMenu(context);
+                if (itemIdx == 0) continue;
+
+                _choiceCtx.lastItemChoice = itemIdx;
+                // TODO: for inventory
+                _lastAction = UseItem{};
+                return _lastAction;
+            }
+
+            case 3: {
+                int confirm = menu.promptBoozeMenu(context);
+                if (confirm == 0) continue;
+
+                _lastAction = DrinkBooze{};
+                return _lastAction;
+            }
+
+            case 4: {
+                int rosterIdx = menu.promptSwapMenu(context);
+                if (rosterIdx == 0) continue;
+
+                int confirm = menu.promptSwapConfirm(context, rosterIdx);
+                if (confirm == 0) continue;
+
+                _choiceCtx.lastSwapTarget = rosterIdx;
+                Creature *incoming = zoo->getStashItem(this, rosterIdx - 1);
+                _lastAction = SwapCreature{ active, incoming };
+                return _lastAction;
+            }
+
+            case 5: {
+                menu.showInfoMenu();
+                continue;   // back to top-level menu
+            }
+
+            default:
+                continue;
         }
-        context.zoo.push_back(makeCreatureInfo(creature, isActive)); 
-    }
-    
-    // context.booze = {
-    //     ,
-    // }
-
-    DisplayMenu menu(context);
-    int topChoice = menu.showBattleMenu();
-
-    switch (topChoice) {
-        case 1: {
-            Move* move = active->getMove(menu.getMoveChoice());
-            return UseMove{ move };
-        }
-        case 2: {
-            // return UseItem{ ... };
-        }
-        case 3: {
-            return DrinkBooze{};
-        }
-        case 4: {
-            int rosterIdx = menu.getSwapTarget();
-            Creature* incoming = zoo->getStashItem(this, rosterIdx);
-            return SwapCreature{ active, incoming };
-        }
-        default:
-            return DrinkBooze{};
     }
 }

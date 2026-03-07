@@ -1,17 +1,27 @@
 #ifndef HOBO_H
 #define HOBO_H
 
-#include "creatures/creature.h"
-#include "stash/inventory.h"
-#include "hobos/actions.h"
-// #include "stash/items.h"
-#include "stash/zoo.h"
-#include "ui/display_menu.h"
-
 #include <string>
 #include <memory>
+#include <vector>
+
+#include "actions.h"
+#include "stash/zoo.h"
+// #include "stash/items.h"
+// #include "stash/inventory.h"
+#include "creatures/creature.h"
 
 
+struct CreatureInfo;
+struct BattleContext;
+class BattleMenu;
+
+struct ChoiceContext {
+    int lastMoveChoice = -1;
+    int lastItemChoice = -1;
+    int lastItemTarget = -1;
+    int lastSwapTarget = -1;
+};
 
 class Hobo {
 protected:
@@ -22,10 +32,11 @@ protected:
     int numItems;
     // std::unique_ptr<Item> booze;
     int alchoholMeter;
-    
-    
-public:
 
+    ChoiceContext _choiceCtx;
+    Action _lastAction;
+
+public:
     Hobo(const std::string hoboName, std::string zooName);
     Zoo& getZoo() const;
     Creature* getCreature(int creatureKey) const;
@@ -40,9 +51,15 @@ public:
     // void selectCreature();
     // void useItem(Item *item);   
     void drinkAlchohol();
+
+    void resetChoiceContext();
+    const ChoiceContext& getChoiceContext() const;
+    const Action& getLastAction() const;
+    virtual Action nextAction(Creature *active,const BattleContext &ctx, 
+        BattleMenu &menu) = 0;
+
     CreatureInfo makeCreatureInfo(Creature *creature, bool isActive = false);
-    Info<CreatureInfo> makeZooInfo();
-    virtual Action nextAction(Creature *active, const BattleContext& context);
+    std::vector<CreatureInfo> makeZooInfo();
     virtual ~Hobo();
 };
 

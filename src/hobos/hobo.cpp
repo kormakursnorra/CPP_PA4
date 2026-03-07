@@ -1,9 +1,10 @@
-#include "hobos/hobo.h"
-#include "creatures/creature.h"
-
 #include <string>
 #include <memory>
-#include <vector>
+
+#include "hobo.h"
+#include "actions.h"
+#include "creatures/creature.h"
+#include "battle.h" 
 
 
 const std::string randEnemyName(uint8_t randNum) {
@@ -64,3 +65,54 @@ void Hobo::addCreature(Creature *creature) {
 void Hobo::drinkAlchohol() {
     return;
 }
+
+void Hobo::resetChoiceContext() {
+    _choiceCtx = ChoiceContext{};
+}
+
+const ChoiceContext& Hobo::getChoiceContext() const { 
+    return _choiceCtx; 
+}
+
+const Action& Hobo::getLastAction() const {
+    return _lastAction;
+}
+
+CreatureInfo Hobo::makeCreatureInfo(Creature *creature, bool isActive) {
+    CreatureInfo info;
+    info.name       = creature->getName();
+    info.hp         = creature->getHp();
+    info.maxHp      = creature->getMaxHp();
+    info.attack     = creature->getAttack();
+    info.defense    = creature->getDefense();
+    info.speed      = creature->getSpeed();
+    info.status     = creature->getStatus();
+    info.statusName = creature->getStatusName();
+    info.alive      = creature->isAlive();
+    info.isActive   = isActive;
+
+    for (int i = 1; i <= 4; ++i) {
+        Move* move = creature->getMove(i);
+        if (!move) { continue; }
+        MoveInfo moveInfo;
+        moveInfo.name         = move->getName();
+        moveInfo.power        = move->getPower();
+        moveInfo.effect       = move->getEffect();
+        moveInfo.accuracy     = move->getAccuracy();
+        moveInfo.effectChance = move->getEffectChance();
+        info.moves.push_back(moveInfo);
+    }
+
+    return info;
+}
+
+Info<CreatureInfo> Hobo::makeZooInfo() {
+    std::vector<CreatureInfo> zooInfo;
+    auto *stash = zoo->getStash(this);
+    for (auto &[key, creature] : *stash) {
+        zooInfo.push_back(makeCreatureInfo(creature));
+    }
+    return zooInfo;
+}
+
+Hobo::~Hobo() {}

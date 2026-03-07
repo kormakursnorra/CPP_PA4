@@ -1,10 +1,11 @@
 #ifndef ENEMY_H
 #define ENEMY_H
 
-#include "creatures/creature.h"
-#include "hobos/actions.h"
-#include "hobos/hobo.h"
 #include <sys/types.h>
+
+#include "hobo.h"
+#include "actions.h"
+#include "creatures/creature.h"
 
 
 enum PowerLvl {
@@ -14,19 +15,19 @@ enum PowerLvl {
     TWEAKER = 3
 };
 
+class BattleMenu;
+struct BattleContext;
+
 class EnemyHobo : public Hobo {
 private:
-
-    Action lastAction;
-
     void fillZoo() const;
     void fillInventory() const;
 
 public:
     PowerLvl powerLvl;
     EnemyHobo(const std::string enemyName, std::string zooName);
-    Action nextAction(Creature *active, const BattleContext &context) override;
-    Action getLastAction();
+    Action nextAction(Creature *active,
+        const BattleContext &ctx, BattleMenu &menu) override;
 };
 
 #endif
