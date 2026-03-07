@@ -36,7 +36,7 @@ public:
 
     ContentMap* getStash(const Hobo *stashOwner) const {
         assert(isOwner(stashOwner));
-        return &contents;
+        return const_cast<T> (&contents);
     }
     
     T getStashItem(const Hobo *stashOwner, int contentKey) const {

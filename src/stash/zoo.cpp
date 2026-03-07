@@ -1,6 +1,6 @@
-#include "stash/zoo.h"
 #include "creatures/creature.h"
-#include "hobos/hobo.h"
+#include "stash/zoo.h"
+
 #include <cassert>
 
 
