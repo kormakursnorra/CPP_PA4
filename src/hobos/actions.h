@@ -6,6 +6,7 @@
 #include "creatures/move.h"
 #include "creatures/creature.h"
 
+
 struct UseMove { Move *move; };
 
 struct UseItem {
