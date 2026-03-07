@@ -41,7 +41,7 @@ public:
     int getAttack() const;
     int getDefense() const;
     Status getStatus() const;
-    Move* getMove(int moveKey);
+    Move* getMove(int moveKey) const;
 
     virtual ~Creature() {}
 };

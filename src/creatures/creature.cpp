@@ -123,6 +123,6 @@ Status Creature::getStatus() const {
     return status;
 }
 
-Move* Creature::getMove(int moveKey) {
-    return &moves[moveKey];
+Move* Creature::getMove(int moveKey) const {
+    return const_cast<Move *> (&moves[moveKey]);
 }
