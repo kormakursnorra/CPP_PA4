@@ -23,7 +23,7 @@ int DisplayMenu::showPreBattle() {
               << " blocks your shopping cart!\n"
               << tui::RESET << "\n";
 
-    _printCreatureCard(_context.playerActive);
+    _printCreatureCard(_context.enemyActive);
     std::cout << "\n";
 
     tui::printBox({
