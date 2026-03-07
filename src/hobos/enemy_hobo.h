@@ -25,7 +25,7 @@ private:
 public:
     PowerLvl powerLvl;
     EnemyHobo(const std::string enemyName, std::string zooName);
-    Action nextAction(Creature *active) override;
+    Action nextAction(Creature *active, const BattleContext &context) override;
     Action getLastAction();
 };
 

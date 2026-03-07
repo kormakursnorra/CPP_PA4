@@ -40,7 +40,9 @@ public:
     // void selectCreature();
     // void useItem(Item *item);   
     void drinkAlchohol();
-    virtual Action nextAction(Creature *active);
+    CreatureInfo makeCreatureInfo(Creature *creature, bool isActive = false);
+    Info<CreatureInfo> makeZooInfo();
+    virtual Action nextAction(Creature *active, const BattleContext& context);
     virtual ~Hobo();
 };
 
