@@ -17,7 +17,7 @@ SRCS := src/game.cpp \
         src/creatures/move.cpp \
         src/stash/zoo.cpp \
 		src/stash/inventory.cpp \
-        src/ui/display_menu.cpp \
+        src/ui/battle_menu.cpp \
         src/ui/tui.cpp
 
 OBJS := $(patsubst src/%.cpp, $(OBJ_DIR)/%.o, $(SRCS))
