@@ -1,5 +1,6 @@
 #include "stash/zoo.h"
 #include "creatures/creature.h"
+#include "hobos/hobo.h"
 #include <cassert>
 
 
@@ -15,6 +16,21 @@ void Zoo::onInsert(Creature *creature) {
 void Zoo::onRemove(Creature *creature) {
     if (starter == creature) { starter = nullptr; }
     numAlive--;
+}
+
+Creature* Zoo::getStarter(const Hobo *zooKeeper) const {
+    assert(isOwner(zooKeeper));
+    return starter;
+}
+
+std::string Zoo::getName(const Hobo *zooKeeper) const {
+    assert(isOwner(zooKeeper));
+    return name;
+}
+
+int Zoo::getNumAlive(const Hobo *zooKeeper) const {
+    assert(isOwner(zooKeeper));
+    return numAlive;
 }
 
 bool Zoo::changeStarter(const Hobo *zooKeeper, int creatureKey) {
@@ -42,10 +58,6 @@ bool Zoo::updateStatus(const Hobo *zooKeeper,  int creatureKey) {
     return true;
 }
 
-int Zoo::getNumAlive(const Hobo *zooKeeper) const {
-    assert(isOwner(zooKeeper));
-    return numAlive;
-}
 
 
 Zoo::~Zoo() {

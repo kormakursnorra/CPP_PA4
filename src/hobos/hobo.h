@@ -28,6 +28,8 @@ public:
 
     Hobo(const std::string hoboName, std::string zooName);
     Zoo& getZoo() const;
+    Creature* getCreature(int creatureKey) const;
+    Creature* getStarter() const; 
     // Inventory& getItems() const;
     std::string getName() const;
     int getNumCreatures() const;
@@ -40,8 +42,6 @@ public:
     void drinkAlchohol();
     virtual Action nextAction(Creature *active);
     virtual ~Hobo();
-
-    friend class Battle;
 };
 
 #endif

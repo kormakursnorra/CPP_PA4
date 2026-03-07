@@ -21,9 +21,11 @@ protected:
 public:
 
     Zoo(const Hobo *zooKeeper, std::string zooName);
+    Creature* getStarter(const Hobo *zooKeeper) const;
+    std::string getName(const Hobo *zooKeeper) const; 
+    int getNumAlive(const Hobo *zooKeeper) const;
     bool changeStarter(const Hobo *zooKeeper, int creatureKey);
     bool updateStatus(const Hobo *zooKeeper, int creatureKey);
-    int getNumAlive(const Hobo *zooKeeper) const;
     ~Zoo();
 };
 

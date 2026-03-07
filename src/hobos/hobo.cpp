@@ -29,6 +29,14 @@ Zoo& Hobo::getZoo() const {
     return *zoo;
 };
 
+Creature* Hobo::getCreature(int creatureKey) const {
+    return zoo->getStashItem(this, creatureKey);
+};
+
+Creature* Hobo::getStarter() const {
+    return zoo->getStarter(this);
+}
+
 // Inventory& Hobo::getInventory() const {
 //     return *inventory;
 // };
