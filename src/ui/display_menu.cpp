@@ -8,7 +8,7 @@
 #include <vector>
 
 
-DisplayMenu::DisplayMenu(const MenuContext& context) 
+DisplayMenu::DisplayMenu(const BattleContext &context) 
 : _context(context) {}
 
 

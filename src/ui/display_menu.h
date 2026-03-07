@@ -47,7 +47,7 @@ struct BoozeInfo {
     int fleeChanceIncrease;
 };
 
-struct MenuContext {
+struct BattleContext {
     str                playerName;
     str                enemyName;
     CreatureInfo       playerActive;
@@ -60,7 +60,7 @@ struct MenuContext {
 
 class DisplayMenu {
 private:
-    MenuContext _context;
+    BattleContext _context;
     int _lastMoveChoice = -1;
     int _lastItemChoice = -1;
     int _lastItemTarget = -1;
@@ -80,7 +80,7 @@ private:
     void _printCreatureCard(const CreatureInfo &creature) const;
 
 public:
-    DisplayMenu(const MenuContext &context);
+    DisplayMenu(const BattleContext &context);
 
     // Entry points called by PlayerHobo
 
