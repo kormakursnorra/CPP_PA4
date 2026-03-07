@@ -6,35 +6,38 @@
 #include <string>
 #include <vector>
 
+class Battle;
 
 template <typename T>
 using Info = std::vector<T>; 
+using str  = std::string;
 
 struct MoveInfo {
-    std::string name;
-    int power;
-    int accuracy;
-    int effectChance;
+    str    name;
+    int    power;
+    int    accuracy;
+    int    effectChance;
     Status effect;
 };
 
 struct CreatureInfo {
-    std::string name;
-    int hp;
-    int maxHp;
-    int attack;
-    int defense;
-    int speed;
-    Status status;
-    std::string statusName;
-    bool alive;
-    bool isActive;
+    str            name;
+    int            hp;
+    int            maxHp;
+    int            attack;
+    int            defense;
+    int            speed;
+    Status         status;
+    str            statusName;
+    bool           alive;
+    bool           isActive;
     Info<MoveInfo> moves;
+    int            moveCount;
 };
 
 struct ItemInfo {
-    std::string name;
-    int         quantity;
+    str name;
+    int quantity;
 };
 
 struct BoozeInfo {
@@ -45,13 +48,13 @@ struct BoozeInfo {
 };
 
 struct MenuContext {
-    std::string playerName;
-    std::string enemyName;
-    CreatureInfo active;
-    CreatureInfo enemyActive;
+    str                playerName;
+    str                enemyName;
+    CreatureInfo       playerActive;
+    CreatureInfo       enemyActive;
     Info<CreatureInfo> zoo;
-    Info<ItemInfo> items;
-    BoozeInfo booze;           
+    Info<ItemInfo>     items;
+    BoozeInfo          booze;           
 };
 
 
@@ -100,6 +103,9 @@ public:
     int getItemChoice() const { return _lastItemChoice; }
     int getItemTarget() const { return _lastItemTarget; }
     int getSwapTarget() const { return _lastSwapTarget; }
+
+
+    friend class Battle;
 };
 
 #endif 

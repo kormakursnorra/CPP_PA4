@@ -23,7 +23,7 @@ int DisplayMenu::showPreBattle() {
               << " blocks your shopping cart!\n"
               << tui::RESET << "\n";
 
-    _printCreatureCard(_context.active);
+    _printCreatureCard(_context.playerActive);
     std::cout << "\n";
 
     tui::printBox({
@@ -72,7 +72,7 @@ int DisplayMenu::_showMoveMenu() {
     tui::printHeader("  CHOOSE  A  MOVE  ", WIDTH);
     std::cout << "\n";
 
-    const CreatureInfo &creature = _context.active;
+    const CreatureInfo &creature = _context.playerActive;
 
     // Creature info summary
     std::ostringstream row;
@@ -301,7 +301,7 @@ int DisplayMenu::_showSwapMenu() {
 
         if (!target.alive) {
             std::cout << tui::FG_RED
-                      << "  That creature has fainted!\n" << tui::RESET
+                      << "  That creature has been slimed!\n" << tui::RESET
                       << tui::DIM << "  Press Enter to continue..." << tui::RESET;
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             continue;
@@ -379,7 +379,7 @@ void DisplayMenu::_printBattleHeader() const {
     tui::printHRule(WIDTH, tui::FG_CYAN);
 
     // Side-by-side: your active creature vs enemy active creature
-    const CreatureInfo& p = _context.active;
+    const CreatureInfo& p = _context.playerActive;
     const CreatureInfo& e = _context.enemyActive;
 
     std::ostringstream left, right;
@@ -420,7 +420,7 @@ void DisplayMenu::_printCreatureCard(const CreatureInfo& creature) const {
     row.clear();
     
 
-    if (!creature.moves.empty()) {
+    if (creature.moveCount == 0) {
         lines.push_back(std::string(tui::DIM) + "Moves:" + tui::RESET);
         for (int i = 0; i < (int)creature.moves.size(); ++i) {
             const MoveInfo& move = creature.moves[i];

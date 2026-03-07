@@ -34,12 +34,12 @@ public:
     Stash(const Hobo *stashOwner) 
     : stashOwner(stashOwner), maxContents(6), numContents(0) {} 
 
-    ContentMap* getStash(const Hobo *stashOwner) {
+    ContentMap* getStash(const Hobo *stashOwner) const {
         assert(isOwner(stashOwner));
         return &contents;
     }
     
-    T getStashItem(const Hobo *stashOwner, int contentKey) {
+    T getStashItem(const Hobo *stashOwner, int contentKey) const {
         assert(isOwner(stashOwner));
         assert(isInStash(contentKey));
 
