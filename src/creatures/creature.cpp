@@ -135,3 +135,31 @@ Status Creature::getStatus() const {
 Move* Creature::getMove(int moveKey) const {
     return const_cast<Move *> (&moves[moveKey]);
 }
+
+Move* Creature::getMove(int moveKey) const {
+    return const_cast<Move *> (&moves[moveKey]);
+}
+
+int Creature::getHp() const {
+    return hp;
+}
+
+int Creature::getMaxHp() const {
+    return maxHp;
+}
+
+void Creature::setHp(int newHp) {
+    Creature.hp = newHp;
+}
+
+void Creature::setAttack(int newAttack) {
+    Creature.attack = newAttack;
+}
+
+void Creature::setDefence(int newDefence) {
+    Creature.defence = newDefence;
+}
+
+void Creature::setSpeed(int newSpeed) {
+    Creature.speed = newSpeed;
+}
