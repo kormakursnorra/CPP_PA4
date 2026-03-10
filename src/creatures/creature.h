@@ -44,8 +44,6 @@ public:
     int getDefense() const;
     Status getStatus() const;
     Move* getMove(int moveKey) const;
-    int getHp() const;
-    int getMaxHp() const;
     void setHp(int newHp);
     void setAttack(int newAttack);
     void setDefence(int newDefence);
