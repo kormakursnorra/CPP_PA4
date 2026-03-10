@@ -149,7 +149,10 @@ void Battle::run() {
         bool playerStunned = (playerActive->getStatus() == STUNNED);
         bool enemyStunned = (enemyActive->getStatus() == STUNNED);
 
-        playerActive->applyStatusEffect();
+        std::string pmsg = playerActive->applyStatusEffect();
+        if (!pmsg.empty()) {
+            menu.showTurnResult(" " + pmsg);
+        }
         if (!playerActive->isAlive()) {
             if (hasAliveCreatures(player)) {
                 BattleContext ctx = buildContext();
@@ -159,7 +162,10 @@ void Battle::run() {
                 break;
             }
         }
-        enemyActive->applyStatusEffect();
+        std::string emsg = enemyActive->applyStatusEffect();
+        if (!emsg.empty()) {
+            menu.showTurnResult(" " + emsg);
+        }
         if (!enemyActive->isAlive()) {
             if (hasAliveCreatures(enemy)) {
                 const auto* stash = enemy->getZoo().getStash(enemy);

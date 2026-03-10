@@ -31,7 +31,7 @@ int main() {
     EnemyHobo enemy("Sketchy Dan", "DanZoo");
 
     Creature* raticate = new Creature("Raticate", 55, 81, 60, 97);
-    raticate->addMove(Move("Bite",    60, 100, NONE, 0));
+    raticate->addMove(Move("Bite",    60, 100, BURNED, 100, 1));
     raticate->addMove(Move("Scratch", 40, 95, NONE, 0));
     raticate->addMove(Move("Ember",   40, 100, BURNED, 10, 5));
     enemy.addCreature(raticate);

@@ -33,7 +33,7 @@ public:
     void displayMoves() const;
     void addMove(Move move);
     void setStatus(Status s, int duration);
-    void applyStatusEffect();
+    std::string applyStatusEffect();
     std::string getStatusName() const;
 
     std::string getName() const;
