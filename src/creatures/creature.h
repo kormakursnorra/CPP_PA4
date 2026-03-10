@@ -1,10 +1,10 @@
 #ifndef CREATURE_H
 #define CREATURE_H
 
-#include "creatures/move.h"
+#include "move.h"
 
 #include <string>
-#include <functional>
+
 
 class Creature {
 protected:
@@ -21,7 +21,9 @@ protected:
 
 
 public:
-    Creature(std::string name, int hp, int attack, int defense, int speed);
+    Creature(std::string name, int hp, 
+        int attack, int defense, int speed
+    );
 
     bool operator==(const Creature &other) const;
 
@@ -35,10 +37,13 @@ public:
     std::string getStatusName() const;
 
     std::string getName() const;
+    int getHp() const;
+    int getMaxHp() const;
     int getSpeed() const;
     int getAttack() const;
     int getDefense() const;
     Status getStatus() const;
+    Move* getMove(int moveKey) const;
     int getHp() const;
     int getMaxHp() const;
     void setHp(int newHp);
@@ -46,17 +51,7 @@ public:
     void setDefence(int newDefence);
     void setSpeed(int newSpeed);
 
-    virtual Move* chooseAction() = 0; // virtual shits dawg
     virtual ~Creature() {}
 };
-
-namespace std {
-    template <> struct hash<Creature> {
-        size_t operator()(const Creature &creature) const {
-            size_t hash_name = hash<std::string>{}(creature.getName());
-            return hash_name;
-        }
-    };
-}
 
 #endif

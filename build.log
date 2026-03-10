@@ -1,0 +1,6 @@
+make[1]: Entering directory '/home/kormakur-snorrason/HR/Year2/Cpp/Assignments/PA4'
+g++ -std=c++17 -Wall -Wextra -Werror -Isrc -c src/hobos/hobo.cpp -o obj/hobos/hobo.o
+g++ -std=c++17 -Wall -Wextra -Werror -Isrc -c src/stash/zoo.cpp -o obj/stash/zoo.o
+g++ -std=c++17 -Wall -Wextra -Werror -Isrc obj/game.o obj/battle.o obj/hobos/hobo.o obj/hobos/player_hobo.o obj/hobos/enemy_hobo.o obj/hobos/boss.o obj/creatures/creature.o obj/creatures/move.o obj/stash/zoo.o obj/stash/inventory.o obj/ui/display_menu.o obj/ui/tui.o -o bin/hobo_fighters
+Build complete: all
+make[1]: Leaving directory '/home/kormakur-snorrason/HR/Year2/Cpp/Assignments/PA4'

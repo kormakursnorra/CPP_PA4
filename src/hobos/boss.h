@@ -1,17 +1,18 @@
 #ifndef BOSS_H
 #define BOSS_H
 
-#include "enemy.h"
+#include <string>
 
-class Boss : public Enemy {
+#include "hobos/enemy_hobo.h"
+
+class Boss : public EnemyHobo {
 private:
     bool enraged; // tracks if boss is mad
 
-    Move* strongestMove(); // finds highest power move
+    // Move* strongestMove(); // finds highest power move
 
 public:
-    Boss(std::string name, int hp, int attack, int defense, int speed);
-    Move* chooseAction();
+    Boss(const std::string name, std::string zooName);
 };
 
 #endif

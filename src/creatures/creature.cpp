@@ -1,8 +1,10 @@
-#include "creatures/creature.h"
 #include <iostream>
 
-Creature::Creature(std::string name, int hp, int attack, int defense, int speed)
-    : name(name), hp(hp), maxHp(hp), attack(attack),
+#include "creatures/creature.h"
+
+Creature::Creature(
+    std::string name, int hp, int attack, int defense, int speed
+) : name(name), hp(hp), maxHp(hp), attack(attack),
     defense(defense), speed(speed), moveCount(0),
     status(NONE), statusDuration(0) {}
 
@@ -106,6 +108,14 @@ std::string Creature::getName() const {
     return name;
 }
 
+int Creature::getHp() const {
+    return hp;
+}
+
+int Creature::getMaxHp() const {
+    return maxHp;
+}
+
 int Creature::getSpeed() const {
     return speed;
 }
@@ -120,6 +130,14 @@ int Creature::getDefense() const {
 
 Status Creature::getStatus() const {
     return status;
+}
+
+Move* Creature::getMove(int moveKey) const {
+    return const_cast<Move *> (&moves[moveKey]);
+}
+
+Move* Creature::getMove(int moveKey) const {
+    return const_cast<Move *> (&moves[moveKey]);
 }
 
 int Creature::getHp() const {

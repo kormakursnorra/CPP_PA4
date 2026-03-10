@@ -1,89 +1,143 @@
-#include "battle.h"
-
 #include <iostream>
+#include <sstream>
 #include <cstdlib>
+#include <variant>
 
-Battle::Battle(PlayerHobo* player, EnemyHobo* opponent)
-    : player(player), opponent(opponent) {}
+#include "ui/tui.h"
+#include "battle.h"
+// #include "hobos/enemy_hobo.h"
+// #include "hobos/player_hobo.h"
+#include "hobos/actions.h"
+#include "ui/battle_menu.h"
+#include "creatures/creature.h"
 
-Hobo* Battle::whoGoesFirst() {
-    return player->getSpeed() >= opponent->getSpeed() ? player : opponent;
+Battle::Battle(Hobo *player, Hobo *enemy)
+: player(player), enemy(enemy), menu() {
+    playerActive = player->getStarter();
+    enemyActive  = enemy->getStarter();
 }
 
-Hobo* Battle::whoGoesSecond() {
-    return player->getSpeed() >= opponent->getSpeed() ? opponent : player
-    ; 
+BattleContext Battle::buildContext() const {
+    BattleContext context;
+    context.playerName   = player->getName();
+    context.enemyName    = enemy->getName();
+    context.playerActive = player->makeCreatureInfo(playerActive, true);
+    context.enemyActive  = enemy->makeCreatureInfo(enemyActive,  true);
+    context.zoo          = player->makeZooInfo();
+    // context.items     = player->makeInventoryInfo();
+    // context.booze     = player->makeBoozeInfo();
+    return context;
 }
 
-int Battle::calcDmg(Creature* attacker, Move* move) {
-    if (!move->hits()) return 0;
+
+int Battle::calcDmg(Creature *attacker, Move *move) const {
+    if (!move->hits()) { return 0; }
     int dmg = (attacker->getAttack() * move->getPower()) / 100;
-
     bool crit = (rand() % 100) < 10;
     if (crit) {
-        dmg *=2;
-        std::cout << "Critical hit!\n";
+        std::cout << tui::FG_YELLOW << "  Critical hit!" << tui::RESET << "\n";
+        dmg *= 2;
     }
-
     return dmg;
 }
 
-void Battle::displayStatus() {
-    std::cout << "\n";
-    player->displayStatus();
-    std::cout << " | ";
-    opponent->displayStatus();
-    std::cout << "\n";
-}
+bool Battle::applyPlayerAction(const Action &action) {
+    return std::visit([&](auto &&act) -> bool {
+        using T = std::decay_t<decltype(act)>;
 
-void Battle::doTurn(Creature* attacker, Creature* defender) {
+        if constexpr (std::is_same_v<T, UseMove>) {
+            int dmg = calcDmg(playerActive, act.move);
+            enemyActive->takeDamage(dmg);
 
-    attacker->applyStatusEffect();
-
-    if (attacker->getStatus() == STUNNED) {
-        return;
-    }
-
-    std::cout << "\n" << attacker->getName() << "'s turn!\n";
-
-    Move* move = attacker->chooseAction();
-    int dmg = calcDmg(attacker, move);
-
-    if (dmg == 0) {
-        std::cout << attacker->getName() << " used "
-            << move->getName() << " but it missed!\n";
-    } else {
-        defender->takeDamage(dmg);
-        std::cout << attacker->getName() << " used " << move->getName()
-            << " dealing " << dmg << " damage!\n";
-
-        // check for status effects
-        if (move->getEffect() != NONE) {
-            if ((rand() % 100) < move->getEffectChance()) {
-                defender->setStatus(move->getEffect(), 3);
-            }
+            std::ostringstream msg;
+            msg << "  " << playerActive->getName()
+                << " uses " << act.move->getName()
+                << " dealing " << dmg << " damage!";
+            menu.showTurnResult(msg.str());
+            return true;
         }
-    }
+        else if constexpr (std::is_same_v<T, UseItem>) {
+            // TODO: apply item effect
+            menu.showTurnResult("  " + player->getName() + " used an item.");
+            return true;
+        }
+        else if constexpr (std::is_same_v<T, DrinkBooze>) {
+            // TODO: apply booze effect
+            menu.showTurnResult("  " + player->getName() + " takes a swig!");
+            return true;
+        }
+        else if constexpr (std::is_same_v<T, SwapCreature>) {
+            playerActive = act.incoming;
+            std::ostringstream msg;
+            msg << "  " << player->getName()
+                << " swaps to " << act.incoming->getName() << "!";
+            menu.showTurnResult(msg.str());
+            return true;
+        }
+        else {   // NoAction
+            return true;
+        }
+    }, action);
 }
 
-void Battle::run() {
-    std::cout << "A wild " << opponent->getName() << " appears!\n";
+bool Battle::applyEnemyAction(const Action &action) {
+    return std::visit([&](auto &&act) -> bool {
+        using T = std::decay_t<decltype(act)>;
 
-    Hobo* first = whoGoesFirst();
-    Hobo* second = whoGoesSecond();
+        if constexpr (std::is_same_v<T, UseMove>) {
+            int dmg = calcDmg(enemyActive, act.move);
+            playerActive->takeDamage(dmg);
 
-    while (player->isAlive() && opponent->isAlive()) {
-        displayStatus();
+            std::ostringstream msg;
+            msg << "  " << enemyActive->getName()
+                << " uses " << act.move->getName()
+                << " dealing " << dmg << " damage!";
+            menu.showTurnResult(msg.str());
+            return true;
+        }
+        else if constexpr (std::is_same_v<T, UseItem>) {
+            menu.showTurnResult("  " + enemy->getName() + " rummages through their coat...");
+            return true;
+        }
+        else if constexpr (std::is_same_v<T, DrinkBooze>) {
+            menu.showTurnResult("  " + enemy->getName() + " chugs from a paper bag!");
+            return true;
+        }
+        else if constexpr (std::is_same_v<T, SwapCreature>) {
+            enemyActive = act.incoming;
+            std::ostringstream msg;
+            msg << "  " << enemy->getName()
+                << " sends out " << act.incoming->getName() << "!";
+            menu.showTurnResult(msg.str());
+            return true;
+        }
+        else {
+            return true;
+        }
+    }, action);
+}
 
-        doTurn(first, second);
-        if (!second->isAlive()) break;
+void Battle::run() { 
+    while (playerActive->isAlive() && enemyActive->isAlive()) {
 
-    doTurn(second, first);
+        player->resetChoiceContext();
+        enemy->resetChoiceContext();
+
+        BattleContext ctx = buildContext();
+
+        Action playerAction = player->nextAction(playerActive, ctx, menu);
+
+        Action enemyAction = enemy->nextAction(enemyActive, ctx, menu);
+
+        applyPlayerAction(playerAction);
+        if (!enemyActive->isAlive()) { break; }
+
+        applyEnemyAction(enemyAction);
+        if (!playerActive->isAlive()) { break; }
     }
 
-    if (player->isAlive()) {
-        std::cout << "\n" << player->getName() << " wins!\n";
-    } else {
-        std::cout << "\n" << opponent->getName() << " wins!\n";
-    }
+    std::string winner = playerActive->isAlive()
+        ? player->getName()
+        : enemy->getName();
+    menu.showBattleOver(winner);
 }

@@ -1,24 +1,79 @@
 #ifndef BATTLE_H
 #define BATTLE_H
 
-#include "creatures/creature.h"
+#include <vector>
+
 #include "hobos/hobo.h"
-#include "hobos/player_hobo.h"
-#include "hobos/enemy_hobo.h"
+#include "ui/battle_menu.h"
+#include "creatures/creature.h"
+
+template <typename T>
+using Info = std::vector<T>; 
+using str  = std::string;
+
+struct MoveInfo {
+    str    name;
+    int    power;
+    int    accuracy;
+    int    effectChance;
+    Status effect;
+};
+
+struct CreatureInfo {
+    str            name;
+    int            hp;
+    int            maxHp;
+    int            attack;
+    int            defense;
+    int            speed;
+    Status         status;
+    str            statusName;
+    bool           alive;
+    bool           isActive;
+    Info<MoveInfo> moves;
+    int            moveCount = 0;
+};
+
+struct ItemInfo {
+    str name;
+    int quantity;
+};
+
+struct BoozeInfo {
+    int sipsLeft;
+    int attackBoost;
+    int defenseBoost;
+    int fleeChanceIncrease;
+};
+
+struct BattleContext {
+    str                playerName;
+    str                enemyName;
+    CreatureInfo       playerActive;
+    CreatureInfo       enemyActive;
+    Info<CreatureInfo> zoo;
+    Info<ItemInfo>     items;
+    BoozeInfo          booze;   
+};
+
 
 class Battle {
 private:
-    PlayerHobo* player;
-    EnemyHobo* opponent;
+    Hobo *player;
+    Hobo *enemy;
+    Creature *playerActive;
+    Creature *enemyActive;
+    BattleMenu menu;
 
-    Hobo* whoGoesFirst();
-    Hobo* whoGoesSecond();
-    int calcDmg(Creature* attacker, Move* move);
-    void displayStatus();
-    void doTurn(Creature* attacker, Creature* defender);
+    BattleContext buildContext() const;
+    
+    int calcDmg(Creature *attacker, Move *move) const;
+    
+    bool applyPlayerAction(const Action &action);
+    bool applyEnemyAction(const Action &action);
 
 public:
-    Battle(PlayerHobo* player, EnemyHobo* opponent);
+    Battle(Hobo* player, Hobo* enemy);
     void run();
 };
 
