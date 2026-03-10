@@ -100,6 +100,7 @@ CreatureInfo Hobo::makeCreatureInfo(Creature *creature, bool isActive) {
         moveInfo.effect       = move->getEffect();
         moveInfo.accuracy     = move->getAccuracy();
         moveInfo.effectChance = move->getEffectChance();
+        moveInfo.effectDuration = move->getEffectDuration();
         info.moves.push_back(moveInfo);
     }
 
