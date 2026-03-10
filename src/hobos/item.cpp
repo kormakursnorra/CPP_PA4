@@ -1,6 +1,7 @@
-#include "item.h"
-#include "creature.h"
 #include <iostream>
+
+#include "item.h"
+#include "creatures/creature.h"
 
 
 
@@ -29,7 +30,7 @@ bool Item::applyItem(Creature* creature) {
         return true;
     } else if (type == add_attack) {
         int attack = creature->getAttack();
-        //int maxAttack = creature->getAttack() *2; //needs fixing
+        int maxAttack = creature->getAttack() * 2; //needs fixing
         int addAttack = getItemEffect();
         int newAttack = attack + addAttack;
         if (attack == maxAttack){
@@ -42,8 +43,8 @@ bool Item::applyItem(Creature* creature) {
         }
         return true;
     } else if (type == add_defence) {
-        int defence = creature->getDefence();
-        //int maxDefence = creature->getDefence() *2; //needs fixing
+        int defence = creature->getDefense();
+        int maxDefence = creature->getDefense() * 2; //needs fixing
         int addDefence = getItemEffect();
         int newDefence = defence + addDefence;
         if (defence == maxDefence){
@@ -57,7 +58,7 @@ bool Item::applyItem(Creature* creature) {
         return true;
     } else if (type == add_speed) {
         int speed = creature->getSpeed();
-        //int maxSpeed = creature->getSpeed() *2; //needs fixing
+        int maxSpeed = creature->getSpeed() * 2; //needs fixing
         int addSpeed = getItemEffect();
         int newSpeed = speed + addSpeed;
         if (speed == maxSpeed){
