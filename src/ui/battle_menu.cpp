@@ -25,13 +25,6 @@ int BattleMenu::showBattleMenu(const BattleContext &context) {
     tui::printBox(opts, WIDTH, tui::FG_CYAN);
 
     return tui::readInt(1, 5);
-
-        // switch (choice) {
-        //     case 1: { int ret = _showMoveMenu();  if (ret != 0) { return 1; } continue; }
-        //     case 2: { int ret = _showItemMenu();  if (ret != 0) { return 2; } continue; }
-        //     case 3: { int ret = _showBoozeMenu(); if (ret != 0) { return 3; } continue; }
-        //     case 4: { int ret = _showSwapMenu();  if (ret != 0) { return 4; } continue; }
-        //     case 5: { _showInfoMenu(); continue; }
 }
 
 
