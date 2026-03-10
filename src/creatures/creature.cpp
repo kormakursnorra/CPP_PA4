@@ -121,3 +121,27 @@ int Creature::getDefense() const {
 Status Creature::getStatus() const {
     return status;
 }
+
+int Creature::getHp() const {
+    return hp;
+}
+
+int Creature::getMaxHp() const {
+    return maxHp;
+}
+
+void Creature::setHp(int newHp) {
+    Creature.hp = newHp;
+}
+
+void Creature::setAttack(int newAttack) {
+    Creature.attack = newAttack;
+}
+
+void Creature::setDefence(int newDefence) {
+    Creature.defence = newDefence;
+}
+
+void Creature::setSpeed(int newSpeed) {
+    Creature.speed = newSpeed;
+}

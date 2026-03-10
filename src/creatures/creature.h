@@ -39,6 +39,12 @@ public:
     int getAttack() const;
     int getDefense() const;
     Status getStatus() const;
+    int getHp() const;
+    int getMaxHp() const;
+    void setHp(int newHp);
+    void setAttack(int newAttack);
+    void setDefence(int newDefence);
+    void setSpeed(int newSpeed);
 
     virtual Move* chooseAction() = 0; // virtual shits dawg
     virtual ~Creature() {}
