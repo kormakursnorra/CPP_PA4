@@ -17,12 +17,8 @@ void Inventory::onRemove(Item *item) {
     numGroupedItems.erase(item);
 }
 
-void Inventory::decrementNumItems(Item *item) {
-    numGroupedItems.at(item)--;
-    // int numItems = 
-    // if (numItems == 0) {
-    //     this->remove(inventoryKeeper, item);
-    // }
+int Inventory::decrementNumItems(Item *item) {
+    return numGroupedItems.at(item)--; 
 }
 
 

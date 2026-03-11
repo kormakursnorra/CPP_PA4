@@ -5,10 +5,10 @@
 
 #include "ui/tui.h"
 #include "battle.h"
-// #include "hobos/enemy_hobo.h"
-// #include "hobos/player_hobo.h"
 #include "hobos/actions.h"
 #include "ui/battle_menu.h"
+#include "hobos/enemy_hobo.h"
+#include "hobos/player_hobo.h"
 #include "creatures/creature.h"
 
 Battle::Battle(Hobo *player, Hobo *enemy)
@@ -24,8 +24,8 @@ BattleContext Battle::buildContext() const {
     context.playerActive = player->makeCreatureInfo(playerActive, true);
     context.enemyActive  = enemy->makeCreatureInfo(enemyActive,  true);
     context.zoo          = player->makeZooInfo();
-    // context.items     = player->makeInventoryInfo();
-    // context.booze     = player->makeBoozeInfo();
+    context.items        = player->makeInventoryInfo();
+    context.booze        = player->makeBoozeInfo();
     return context;
 }
 

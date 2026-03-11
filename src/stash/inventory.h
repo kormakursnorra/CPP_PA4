@@ -17,10 +17,10 @@ protected:
     
     void onInsert(Item *item);
     void onRemove(Item *item);
-    void decrementNumItems(Item *item);
-          
-public:
+    
+    public:
     Inventory(const Hobo *inventoryKeeper);
+    int decrementNumItems(Item *item);
     int getNumGroupedItems(Item *item) const;
 };
 

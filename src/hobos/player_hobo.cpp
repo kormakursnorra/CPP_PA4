@@ -1,6 +1,7 @@
 #include "player_hobo.h"
 #include "actions.h"
 #include "battle.h"
+#include "items/item.h"
 #include "ui/battle_menu.h"
 #include "creatures/creature.h"
 
@@ -34,8 +35,14 @@ Action PlayerHobo::nextAction(Creature *active,
                 if (itemIdx == 0) continue;
 
                 _choiceCtx.lastItemChoice = itemIdx;
-                // TODO: for inventory
-                _lastAction = UseItem{};
+                Item *item = inventory->getStashItem(this, itemIdx);
+                
+                int remaining = inventory->decrementNumItems(item);
+                if (remaining == 0) {
+                    inventory->remove(this, itemIdx);
+                }
+                
+                _lastAction = UseItem{ item };
                 return _lastAction;
             }
 
@@ -43,7 +50,7 @@ Action PlayerHobo::nextAction(Creature *active,
                 int confirm = menu.promptBoozeMenu(context);
                 if (confirm == 0) continue;
 
-                _lastAction = DrinkBooze{};
+                _lastAction = DrinkBooze{ booze.get() };
                 return _lastAction;
             }
 

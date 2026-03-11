@@ -34,20 +34,12 @@ std::string Hobo::getName() const {
 }
 
 Zoo& Hobo::getZoo() const {
-    return *zoo;
-};
-
-Inventory& Hobo::getInventory() const {
-    return *inventory;
+    return *zoo.get();
 };
 
 Creature* Hobo::getCreature(int creatureKey) const {
     return zoo->getStashItem(this, creatureKey);
 };
-
-Item* Hobo::getItem(int itemKey) const {
-    return inventory->getStashItem(this, itemKey);
-}
 
 Creature* Hobo::getStarter() const {
     return zoo->getStarter(this);
@@ -57,6 +49,18 @@ int Hobo::getNumCreatures() const {
     return zoo->getNumContents(this);
 }
 
+void Hobo::addCreature(Creature *creature) {
+    zoo->insert(this, creature);
+}
+
+Inventory& Hobo::getInventory() const {
+    return *inventory.get();
+}
+
+Item* Hobo::getItem(int itemKey) const {
+    return inventory->getStashItem(this, itemKey);
+}
+
 int Hobo::getNumItems() const {
     return inventory->getNumContents(this);
 }
@@ -64,10 +68,6 @@ int Hobo::getNumItems() const {
 int Hobo::getNumGroupedItems(int itemKey) const {
     Item *item = inventory->getStashItem(this, itemKey);
     return inventory->getNumGroupedItems(item);
-}
-
-void Hobo::addCreature(Creature *creature) {
-    zoo->insert(this, creature);
 }
 
 void Hobo::addItem(Item *item) {
