@@ -28,7 +28,7 @@ protected:
     const std::string name;
     std::unique_ptr<Zoo> zoo;
     std::unique_ptr<Inventory> inventory;
-    std::unique_ptr<Booze> booze;
+    std::unique_ptr<Item> booze;
     
     int numCreatures;
     int numItems;
@@ -39,22 +39,18 @@ protected:
 
 public:
     Hobo(const std::string hoboName, std::string zooName);
+    std::string getName() const;
     Zoo& getZoo() const;
     Inventory& getInventory() const;
     Creature* getCreature(int creatureKey) const;
     Item* getItem(int itemKey) const;
     Creature* getStarter() const; 
-    std::string getName() const;
     int getNumCreatures() const;
     int getNumItems() const;
-    int getNumGroupedItems() const;
+    int getNumGroupedItems(int itemKey) const;
 
     void addItem(Item *item);
-    void addCreature(Creature *creature);
-    void selectItem(int itemKey);
-    void selectCreature();
-    void useItem(Item *item);   
-    void drinkAlchohol();
+    void addCreature(Creature *creature);  
 
     void resetChoiceContext();
     const ChoiceContext& getChoiceContext() const;

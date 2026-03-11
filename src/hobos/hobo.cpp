@@ -19,53 +19,59 @@ Hobo::Hobo(const std::string name, std::string zooName)
 : name(name), alchoholMeter(0) {
     zoo = std::make_unique<Zoo>(this, zooName);
     inventory = std::make_unique<Inventory>(this);
-    booze = std::make_unique<Booze>(
+    booze = std::make_unique<Item>(
         "Booze", 
-        "Increases Creature attack & defense stats for all Zoo Members, also increases likelihood they flee",
-        heal, 0);
+        "Increases Creature attack & defense stats for all Zoo Members at the cost of an increased likelihood they flee",
+        BOOZE, 
+        0);
     
     numCreatures = zoo->getNumContents(this);
     numItems = inventory->getNumContents(this);
+}
+
+std::string Hobo::getName() const {
+    return name;
 }
 
 Zoo& Hobo::getZoo() const {
     return *zoo;
 };
 
+Inventory& Hobo::getInventory() const {
+    return *inventory;
+};
+
 Creature* Hobo::getCreature(int creatureKey) const {
     return zoo->getStashItem(this, creatureKey);
 };
 
-Creature* Hobo::getStarter() const {
-    return zoo->getStarter(this);
+Item* Hobo::getItem(int itemKey) const {
+    return inventory->getStashItem(this, itemKey);
 }
 
-// Inventory& Hobo::getInventory() const {
-//     return *inventory;
-// };
-
-std::string Hobo::getName() const {
-    return name;
+Creature* Hobo::getStarter() const {
+    return zoo->getStarter(this);
 }
 
 int Hobo::getNumCreatures() const {
     return zoo->getNumContents(this);
 }
 
-// int Hobo::getNumItems() const {
-//     return inventory->getNumContents(this);
-// }
+int Hobo::getNumItems() const {
+    return inventory->getNumContents(this);
+}
+
+int Hobo::getNumGroupedItems(int itemKey) const {
+    Item *item = inventory->getStashItem(this, itemKey);
+    return inventory->getNumGroupedItems(item);
+}
 
 void Hobo::addCreature(Creature *creature) {
     zoo->insert(this, creature);
 }
 
-// void Hobo::addItem(Item *item) {
-//     inventory->insert(this, item);
-// }
-
-void Hobo::drinkAlchohol() {
-    return;
+void Hobo::addItem(Item *item) {
+    inventory->insert(this, item);
 }
 
 void Hobo::resetChoiceContext() {
