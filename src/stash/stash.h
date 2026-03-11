@@ -6,21 +6,17 @@
 #include <unordered_map>
 
 class Hobo;
-class Battle;
 
-template<typename T> 
+template<typename StashType, typename StashObj> 
 class Stash {
 private:
     const Hobo *stashOwner;
 
 protected:
-    using ContentMap = std::unordered_map<int, T>;
+    using ContentMap = std::unordered_map<int, StashObj>;
     ContentMap contents;
     int maxContents;
     int numContents;
-    
-    virtual void onInsert(T) {}
-    virtual void onRemove(T) {}
     
     bool isOwner(const Hobo* caller) const {
         return caller == stashOwner; 
@@ -39,11 +35,11 @@ public:
         return &contents;
     }
     
-    T getStashItem(const Hobo *stashOwner, int contentKey) const {
+    StashObj* getStashItem(const Hobo *stashOwner, int contentKey) const {
         assert(isOwner(stashOwner));
         assert(isInStash(contentKey));
 
-        return contents.at(contentKey);
+        return &contents.at(contentKey);
     }
     
     int getNumContents(const Hobo *stashOwner) const {
@@ -51,15 +47,15 @@ public:
         return numContents;
     }
     
-    bool insert(const Hobo *stashOwner, T newItem) {
+    bool insert(const Hobo *stashOwner, StashObj *newItem) {
         assert(isOwner(stashOwner));
         if (numContents == maxContents) {
             return false;
         }
 
         contents.insert({numContents + 1, newItem});
+        static_cast<StashType*>(this)->onInsert(newItem);
         numContents++;
-        onInsert(newItem);
         return true;
     }
     
@@ -68,14 +64,12 @@ public:
         assert(isInStash(contentKey));
         assert(maxContents > 0);
         
-        contents.erase(contentKey);
+        StashObj *obj = contents.at(contentKey);
+        static_cast<StashType*>(this)->onRemove(obj);
         numContents--;
         return true;
     }
-    
-    virtual ~Stash() {}
 
-    friend class Battle;
     friend class Hobo;
 };
 
