@@ -1,25 +1,37 @@
 #ifndef INVENTORY_H
 #define INVENTORY_H
 
-#include <vector>
 #include <unordered_map>
 
 #include "stash.h"
-#include "item.h"
+#include "items/item.h"
 
-
-class Inventory : public Stash<Inventory, Item*> {
+template <typename ItemType>
+class Inventory : public Stash<Inventory<Item<ItemType>>, Item<ItemType>*> {
 private:
     const Hobo *inventoryKeeper;
 
 protected:
-    using NumGroupedItems = std::unordered_map<Item*, int>; 
+    using NumGroupedItems = std::unordered_map<Item<ItemType>*, int>; 
     NumGroupedItems numGroupedItems;
-    void onInsert(Item *item);
-    void onRemove(Item *item);
+    
+    void onInsert(Item<ItemType> *item) {
+        int numItems = 0;
+        if (numGroupedItems.count(item) == 0) {
+            numGroupedItems.insert({item, numItems + 1});      
+        }
+        numItems = numGroupedItems.at(item);
+        numGroupedItems.insert({item, numItems + 1});
+    }
+    
+    void onRemove(Item<ItemType> *item) {
+        
+        numGroupedItems.at(item)--;
+    }
     
 public:
-    Inventory(const Hobo *inventoryKeeper);
+    Inventory(const Hobo *inventoryKeeper)
+    : Stash<Inventory, Item<ItemType>*>(inventoryKeeper) {};
 };
 
 #endif

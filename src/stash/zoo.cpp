@@ -4,7 +4,7 @@
 #include "creatures/creature.h"
 
 Zoo::Zoo(const Hobo *zooKeeper, std::string name) 
-: Stash<Creature *>(zooKeeper), name(name), numAlive(0) {}
+: Stash<Zoo, Creature*>(zooKeeper), name(name), numAlive(0) {}
 
 
 void Zoo::onInsert(Creature *creature) {
@@ -13,6 +13,7 @@ void Zoo::onInsert(Creature *creature) {
 }
 
 void Zoo::onRemove(Creature *creature) {
+    
     if (starter == creature) { starter = nullptr; }
     numAlive--;
 }
@@ -56,7 +57,3 @@ bool Zoo::updateStatus(const Hobo *zooKeeper,  int creatureKey) {
     
     return true;
 }
-
-
-
-Zoo::~Zoo() {}

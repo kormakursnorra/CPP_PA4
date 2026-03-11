@@ -18,12 +18,14 @@ const std::string randZooName(uint8_t randNum) {
 Hobo::Hobo(const std::string name, std::string zooName) 
 : name(name), alchoholMeter(0) {
     zoo = std::make_unique<Zoo>(this, zooName);
+    inventory = std::make_unique<Inventory>(this);
+    booze = std::make_unique<Booze>(
+        "Booze", 
+        "Increases Creature attack & defense stats for all Zoo Members, also increases likelihood they flee",
+        heal, 0);
+    
     numCreatures = zoo->getNumContents(this);
-    // inventory = Inventory;
-    // booze = std::unique_ptr<Item>( 
-        // new Item(this, zooName)
-    // );
-    // numItems = zoo->getNumContents(this);
+    numItems = inventory->getNumContents(this);
 }
 
 Zoo& Hobo::getZoo() const {

@@ -14,6 +14,8 @@ ItemType Item::getItemType() const{return type;}
 int Item::getItemEffect() const{return effect;}
 
 bool Item::applyItem(Creature* creature) {
+    return static_cast<ItemType*>(this)->applyItem();
+    
     if (type == heal) {
         int hp = creature->getHp();
         int maxHp = creature->getMaxHp();

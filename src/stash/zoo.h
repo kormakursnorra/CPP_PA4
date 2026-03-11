@@ -6,7 +6,7 @@
 #include "stash.h"
 #include "creatures/creature.h"
 
-class Zoo : public Stash<Creature*> {
+class Zoo : public Stash<Zoo, Creature*> {
 private:
     const Hobo *zooKeeper;
     Creature *starter;
@@ -15,11 +15,10 @@ protected:
     std::string name;
     int numAlive;
     
-    void onInsert(Creature *creature) override;
-    void onRemove(Creature *creature) override;
+    void onInsert(Creature *creature);
+    void onRemove(Creature *creature);
 
 public:
-
     Zoo(const Hobo *zooKeeper, std::string zooName);
     Creature* getStarter(const Hobo *zooKeeper) const;
     std::string getName(const Hobo *zooKeeper) const; 

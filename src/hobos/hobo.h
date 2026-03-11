@@ -7,8 +7,8 @@
 
 #include "actions.h"
 #include "stash/zoo.h"
-// #include "stash/items.h"
-// #include "stash/inventory.h"
+#include "items/item.h"
+#include "stash/inventory.h"
 #include "creatures/creature.h"
 
 
@@ -27,10 +27,11 @@ class Hobo {
 protected:
     const std::string name;
     std::unique_ptr<Zoo> zoo;
+    std::unique_ptr<Inventory> inventory;
+    std::unique_ptr<Booze> booze;
+    
     int numCreatures;
-    // std::unique_ptr<Inventory> inventory;
     int numItems;
-    // std::unique_ptr<Item> booze;
     int alchoholMeter;
 
     ChoiceContext _choiceCtx;
@@ -39,17 +40,20 @@ protected:
 public:
     Hobo(const std::string hoboName, std::string zooName);
     Zoo& getZoo() const;
+    Inventory& getInventory() const;
     Creature* getCreature(int creatureKey) const;
+    Item* getItem(int itemKey) const;
     Creature* getStarter() const; 
-    // Inventory& getItems() const;
     std::string getName() const;
     int getNumCreatures() const;
     int getNumItems() const;
-    // void addItem(Item *item);
+    int getNumGroupedItems() const;
+
+    void addItem(Item *item);
     void addCreature(Creature *creature);
-    // void selectItem(int itemKey);
-    // void selectCreature();
-    // void useItem(Item *item);   
+    void selectItem(int itemKey);
+    void selectCreature();
+    void useItem(Item *item);   
     void drinkAlchohol();
 
     void resetChoiceContext();
