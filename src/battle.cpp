@@ -38,10 +38,10 @@ int Battle::calcDmg(Creature *attacker, Move *move) const {
         return 0;
     }
 
-    int baseDmg = (attacker->getAttack() * move->getPower()) / 100;
+    int baseDmg = (int)(attacker->getAttack() * move->getPower()) / 100;
 
     if (attacker->getStatus() == WEAKENED) {
-        baseDmg = baseDmg / 2;
+        baseDmg = (int)baseDmg / 2;
     }
 
     if (attacker->getStatus() == SCARED) {

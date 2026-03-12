@@ -167,7 +167,7 @@ BoozeInfo Hobo::makeBoozeInfo(Booze *drink) {
     BoozeInfo info;
     info.sipsLeft           = drink->getSipsLeft();
     info.attackBoost        = drink->getItemEffect();
-    info.fleeChanceIncrease = this->alchoholMeter * 25;
+    info.fleeChanceIncrease = alchoholMeter;
     return info;
 }
 
