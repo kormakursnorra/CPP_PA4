@@ -1,14 +1,16 @@
 #include <iostream>
 #include <sstream>
 #include <cstdlib>
+#include <type_traits>
 #include <variant>
 
+#include "items/item.h"
 #include "ui/tui.h"
 #include "battle.h"
-// #include "hobos/enemy_hobo.h"
-// #include "hobos/player_hobo.h"
 #include "hobos/actions.h"
 #include "ui/battle_menu.h"
+#include "hobos/enemy_hobo.h"
+#include "hobos/player_hobo.h"
 #include "creatures/creature.h"
 
 Battle::Battle(Hobo *player, Hobo *enemy)
@@ -24,8 +26,8 @@ BattleContext Battle::buildContext() const {
     context.playerActive = player->makeCreatureInfo(playerActive, true);
     context.enemyActive  = enemy->makeCreatureInfo(enemyActive,  true);
     context.zoo          = player->makeZooInfo();
-    // context.items     = player->makeInventoryInfo();
-    // context.booze     = player->makeBoozeInfo();
+    context.items        = player->makeInventoryInfo();
+    context.booze        = player->makeBoozeInfo();
     return context;
 }
 
@@ -40,6 +42,15 @@ int Battle::calcDmg(Creature *attacker, Move *move) const {
     }
     return dmg;
 }
+
+int calcEffect(Creature *receiver, Item *item) const {
+    ItemType type = item->getItemType();     
+    if constexpr (std::is_same_v<type, HEAL>) {
+
+    } 
+    int effect = item->getItemEffect() / 100;
+}
+
 
 bool Battle::applyPlayerAction(const Action &action) {
     return std::visit([&](auto &&act) -> bool {
@@ -65,7 +76,9 @@ bool Battle::applyPlayerAction(const Action &action) {
             return true;
         }
         else if constexpr (std::is_same_v<T, UseItem>) {
-            // TODO: apply item effect
+            int effect = calcEffect(act.receiver, act.item);
+            playerActive->
+
             menu.showTurnResult("  " + player->getName() + " used an item.");
             return true;
         }

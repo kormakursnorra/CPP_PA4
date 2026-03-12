@@ -4,17 +4,27 @@
 #include "creatures/creature.h"
 
 
-
 Item::Item(std::string name, std::string description, ItemType type, int effect)
     :name(name), description(description), type(type), effect(effect) {}
 
-std::string Item::getItemName() const{return name;}
-std::string Item::getItemDescription() const{return description;}
-ItemType Item::getItemType() const{return type;}
-int Item::getItemEffect() const{return effect;}
+std::string Item::getItemName() const{ 
+    return name;
+}
+
+std::string Item::getItemDescription() const{ 
+    return description;
+}
+
+ItemType Item::getItemType() const{ 
+    return type;
+}
+
+int Item::getItemEffect() const{ 
+    return effect;
+}
 
 bool Item::applyItem(Creature* creature) {
-    if (type == heal) {
+    if (type == HEAL) {
         int hp = creature->getHp();
         int maxHp = creature->getMaxHp();
         int addHp = getItemEffect();
@@ -28,7 +38,7 @@ bool Item::applyItem(Creature* creature) {
             creature->setHp(newHp);
         }
         return true;
-    } else if (type == add_attack) {
+    } else if (type == EMPOWER) {
         int attack = creature->getAttack();
         int maxAttack = creature->getAttack() * 2; //needs fixing
         int addAttack = getItemEffect();
@@ -42,7 +52,7 @@ bool Item::applyItem(Creature* creature) {
             creature->setAttack(newAttack);
         }
         return true;
-    } else if (type == add_defence) {
+    } else if (type == BOLSTER) {
         int defence = creature->getDefense();
         int maxDefence = creature->getDefense() * 2; //needs fixing
         int addDefence = getItemEffect();
@@ -56,7 +66,7 @@ bool Item::applyItem(Creature* creature) {
             creature->setDefence(newDefence);
         }
         return true;
-    } else if (type == add_speed) {
+    } else if (type == SPEED) {
         int speed = creature->getSpeed();
         int maxSpeed = creature->getSpeed() * 2; //needs fixing
         int addSpeed = getItemEffect();
