@@ -5,6 +5,7 @@
 #include "ui/tui.h"
 #include "hobos/player_hobo.h"
 #include "hobos/enemy_hobo.h"
+#include "hobos/boss.h"
 #include "creatures/creature.h"
 #include "creatures/move.h"
 
@@ -16,23 +17,23 @@ int main() {
     PlayerHobo player("Hreimur", "HreimurZoo");
 
     Creature* pikachu = new Creature("Pikachu", 60, 55, 40, 90);
-    pikachu->addMove(Move("Thunderbolt", 90, 100, NONE,    0));
-    pikachu->addMove(Move("Quick Attack", 40, 95, NONE,    0));
-    pikachu->addMove(Move("Thunder Wave", 0,  90, STUNNED, 100));
+    pikachu->addMove(Move("Thunderbolt", 90, 100, STUNNED, 100, 2));
+    pikachu->addMove(Move("Quick Attack", 40, 95, NONE, 0 ,0));
+    pikachu->addMove(Move("Thunder Wave", 0, 90, BURNED, 100, 2));
     player.addCreature(pikachu);
 
     Creature* bulbasaur = new Creature("Bulbasaur", 45, 49, 49, 45);
-    bulbasaur->addMove(Move("Vine Whip",   45, 100, NONE,     0));
-    bulbasaur->addMove(Move("Razor Leaf",  55, 95,  NONE,     0));
-    bulbasaur->addMove(Move("Leech Seed",  0,  90,  INFECTED, 100));
+    bulbasaur->addMove(Move("Vine Whip",   45, 100, NONE, 0));
+    bulbasaur->addMove(Move("Razor Leaf",  55, 95, NONE, 0));
+    bulbasaur->addMove(Move("Leech Seed",  0, 90, INFECTED, 100, 3));
     player.addCreature(bulbasaur);
 
     EnemyHobo enemy("Sketchy Dan", "DanZoo");
 
     Creature* raticate = new Creature("Raticate", 55, 81, 60, 97);
-    raticate->addMove(Move("Bite",    60, 100, NONE,   0));
-    raticate->addMove(Move("Scratch", 40, 95,  NONE,   0));
-    raticate->addMove(Move("Ember",   40, 100, BURNED, 10));
+    raticate->addMove(Move("Bite",    60, 100, BURNED, 100, 1));
+    raticate->addMove(Move("Scratch", 40, 95, NONE, 0));
+    raticate->addMove(Move("Ember",   40, 100, BURNED, 10, 5));
     enemy.addCreature(raticate);
 
     Creature* geodude = new Creature("Geodude", 40, 80, 100, 20);
