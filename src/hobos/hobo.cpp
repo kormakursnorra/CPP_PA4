@@ -1,10 +1,13 @@
 #include <string>
 #include <memory>
+#include <vector>
 
 #include "hobo.h"
-#include "actions.h"
-#include "creatures/creature.h"
 #include "battle.h" 
+#include "actions.h"
+#include "items/item.h"
+#include "items/booze.h"
+#include "creatures/creature.h"
 
 
 const std::string randEnemyName(uint8_t randNum) {
@@ -18,16 +21,22 @@ const std::string randZooName(uint8_t randNum) {
 Hobo::Hobo(const std::string name, std::string zooName) 
 : name(name), alchoholMeter(0) {
     zoo = std::make_unique<Zoo>(this, zooName);
+    inventory = std::make_unique<Inventory>(this);
+    booze = std::make_unique<Booze>(
+        "Booze", 
+        "Increases Creature attack stats for all Zoo Members at the cost of an increased likelihood they flee",
+        0, EMPOWER); 
+    
     numCreatures = zoo->getNumContents(this);
-    // inventory = Inventory;
-    // booze = std::unique_ptr<Item>( 
-        // new Item(this, zooName)
-    // );
-    // numItems = zoo->getNumContents(this);
+    numItems = inventory->getNumContents(this);
+}
+
+std::string Hobo::getName() const {
+    return name;
 }
 
 Zoo& Hobo::getZoo() const {
-    return *zoo;
+    return *zoo.get();
 };
 
 Creature* Hobo::getCreature(int creatureKey) const {
@@ -38,32 +47,37 @@ Creature* Hobo::getStarter() const {
     return zoo->getStarter(this);
 }
 
-// Inventory& Hobo::getInventory() const {
-//     return *inventory;
-// };
-
-std::string Hobo::getName() const {
-    return name;
-}
-
 int Hobo::getNumCreatures() const {
     return zoo->getNumContents(this);
 }
-
-// int Hobo::getNumItems() const {
-//     return inventory->getNumContents(this);
-// }
 
 void Hobo::addCreature(Creature *creature) {
     zoo->insert(this, creature);
 }
 
-// void Hobo::addItem(Item *item) {
-//     inventory->insert(this, item);
-// }
+Inventory& Hobo::getInventory() const {
+    return *inventory.get();
+}
 
-void Hobo::drinkAlchohol() {
-    return;
+Item* Hobo::getItem(int itemKey) const {
+    return inventory->getStashItem(this, itemKey);
+}
+
+Booze& Hobo::getBooze() const {
+    return *booze.get();
+}
+
+int Hobo::getNumItems() const {
+    return inventory->getNumContents(this);
+}
+
+int Hobo::getNumGroupedItems(int itemKey) const {
+    Item *item = inventory->getStashItem(this, itemKey);
+    return inventory->getNumGroupedItems(item);
+}
+
+void Hobo::addItem(Item *item) {
+    inventory->insert(this, item);
 }
 
 void Hobo::resetChoiceContext() {
@@ -107,7 +121,24 @@ CreatureInfo Hobo::makeCreatureInfo(Creature *creature, bool isActive) {
     return info;
 }
 
-Info<CreatureInfo> Hobo::makeZooInfo() {
+ItemInfo Hobo::makeItemInfo(Item *item) {
+    ItemInfo info;
+    info.name        = item->getItemName();
+    info.description = item->getItemDescription();
+    info.type        = item->getItemType();
+    info.effect      = item->getItemEffect();
+    return info;
+}
+
+BoozeInfo Hobo::makeBoozeInfo(Booze *drink) {
+    BoozeInfo info;
+    info.sipsLeft           = drink->getSipsLeft();
+    info.attackBoost        = drink->getItemEffect();
+    info.fleeChanceIncrease = this->alchoholMeter * 25;
+    return info;
+}
+
+std::vector<CreatureInfo> Hobo::makeZooInfo() {
     std::vector<CreatureInfo> zooInfo;
     auto *stash = zoo->getStash(this);
     for (auto &[key, creature] : *stash) {
@@ -115,5 +146,15 @@ Info<CreatureInfo> Hobo::makeZooInfo() {
     }
     return zooInfo;
 }
+
+std::vector<ItemInfo> Hobo::makeInventoryInfo() {
+    std::vector<ItemInfo> inventoryInfo;
+    auto *stash = inventory->getStash(this);
+    for (auto &[key, item] : *stash) {
+        inventoryInfo.push_back(makeItemInfo(item));
+    }
+    return inventoryInfo;
+}
+
 
 Hobo::~Hobo() {}

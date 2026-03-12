@@ -5,10 +5,10 @@
 class Creature;
 
 enum ItemType {
-    heal,
-    add_attack,
-    add_defence,
-    add_speed
+    HEAL,
+    EMPOWER,
+    BOLSTER,
+    SPEED
 };
 
 class Item {
@@ -19,7 +19,10 @@ class Item {
         int effect;
     
     public:
-        Item(const std::string name, const std::string description, ItemType type, int effect);
+        Item(const std::string name, 
+            const std::string description, 
+            ItemType type, int effect
+        );
 
         std::string getItemName() const;
         std::string getItemDescription() const;
