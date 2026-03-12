@@ -8,7 +8,6 @@
 #include "battle_menu.h"
 #include "battle.h"  
 
-
 // Battle Menu (top level)
 int BattleMenu::showBattleMenu(const BattleContext &context) {
     tui::clearScreen();
@@ -251,6 +250,8 @@ int BattleMenu::promptSwapMenu(const BattleContext &context) const {
                 << "  ATK " << tui::FG_RED  << creature.attack  << tui::RESET
                 << "  DEF " << tui::FG_BLUE << creature.defense << tui::RESET
                 << "  SPD " << tui::FG_CYAN << creature.speed   << tui::RESET;
+                if (creature.status != Status::NONE)                                                  
+                    row << "  " << tui::FG_YELLOW << "[" << creature.statusName << "]" << tui::RESET;
         }
 
         if (creature.isActive)
@@ -380,8 +381,14 @@ void BattleMenu::_printBattleHeader(const BattleContext &context) const {
     std::ostringstream left, right;
     left  << tui::FG_GREEN << tui::BOLD << tui::padRight(p.name, 12) << tui::RESET
           << " " << tui::hpBar(p.hp, p.maxHp, 10);
+    if (p.status != Status::NONE) {
+        left << " " << tui::FG_YELLOW << "[" << p.statusName << ']' << tui::RESET;
+    }
     right << tui::FG_RED   << tui::BOLD << tui::padRight(e.name, 12) << tui::RESET
           << " " << tui::hpBar(e.hp, e.maxHp, 10);
+    if (e.status != Status::NONE) {
+        right << " " << tui::FG_YELLOW << "[" << e.statusName << ']' << tui::RESET;
+    }
 
     std::cout << "  " << left.str()
               << tui::FG_WHITE << "  vs  " << tui::RESET

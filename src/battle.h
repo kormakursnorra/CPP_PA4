@@ -73,6 +73,7 @@ private:
     
     bool applyPlayerAction(const Action &action);
     bool applyEnemyAction(const Action &action);
+    bool hasAliveCreatures(Hobo* hobo) const;
 
 public:
     Battle(Hobo* player, Hobo* enemy);

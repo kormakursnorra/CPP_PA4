@@ -105,7 +105,7 @@ CreatureInfo Hobo::makeCreatureInfo(Creature *creature, bool isActive) {
     info.alive      = creature->isAlive();
     info.isActive   = isActive;
 
-    for (int i = 1; i <= 4; ++i) {
+    for (int i = 0; i <= 3; ++i) {
         Move* move = creature->getMove(i);
         if (!move) { continue; }
         MoveInfo moveInfo;
@@ -114,6 +114,7 @@ CreatureInfo Hobo::makeCreatureInfo(Creature *creature, bool isActive) {
         moveInfo.effect       = move->getEffect();
         moveInfo.accuracy     = move->getAccuracy();
         moveInfo.effectChance = move->getEffectChance();
+        moveInfo.effectDuration = move->getEffectDuration();
         info.moves.push_back(moveInfo);
     }
 

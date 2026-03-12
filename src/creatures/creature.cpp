@@ -57,7 +57,6 @@ void Creature::setStatus(Status s, int duration) {
     }
     status = s;
     statusDuration = duration;
-    std::cout << name << " is now " << getStatusName() << "!\n";
 }
 
 std::string Creature::getStatusName() const {
@@ -70,32 +69,30 @@ std::string Creature::getStatusName() const {
 
 }
 
-void Creature::applyStatusEffect() {
+std::string Creature::applyStatusEffect() {
     if (status == NONE) {
-        return;
+        return "";
     }
+    std::string msg;
+
+    int &maxHp = stats.hp;
+    int &hp = stats.hp;
 
     switch (status) {
         case INFECTED: {
-            int dmg = stats.maxHp * 0.10;
-            stats.hp -= dmg;
-            if (stats.hp < 0) {
-                stats.hp = 0;
-            }
-            std::cout << name << " is infected and lost " << dmg << "HP!\n";
+            int dmg = maxHp * 0.10;
+            hp = std::max(0, hp - dmg);
+            msg = name + " is infected and lost " + std::to_string(dmg) + "HP!";
             break; 
         }
         case STUNNED: {
-            std::cout << name << " is stunned and cant move!\n";
+            msg = name + " is stunned and cant move!";
             break; 
         }
         case BURNED: {
             int bdmg = stats.maxHp * 0.05;
-            stats.hp -= bdmg;
-            if (stats.hp < 0) {
-                stats.hp = 0;
-            }
-            std::cout << name << " is burning and lost " << bdmg << "HP!\n";
+            hp = std::max(0, hp - bdmg);
+            msg = name + " is burning and lost " + std::to_string(bdmg) + "HP!";
             break; 
         }
         default: 
@@ -104,10 +101,11 @@ void Creature::applyStatusEffect() {
 
     statusDuration--;
     if (statusDuration <= 0) {
-        std::cout << name << " recovered from" << getStatusName() << "!\n";
+        msg =  "\n " + name + " recovered from" + getStatusName() + "!";
         status = NONE;
         statusDuration = 0;
     }
+    return msg;
 }
 
 std::string Creature::getName() const {

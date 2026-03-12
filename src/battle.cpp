@@ -56,6 +56,14 @@ bool Battle::applyPlayerAction(const Action &action) {
                 << " uses " << act.move->getName()
                 << " dealing " << dmg << " damage!";
             menu.showTurnResult(msg.str());
+
+            if (act.move->getEffect() != NONE) {
+                int chance = rand() % 100;
+                if (chance < act.move->getEffectChance()) {
+                    enemyActive->setStatus(act.move->getEffect(), act.move->getEffectDuration());
+                }
+            }
+
             return true;
         }
         else if constexpr (std::is_same_v<T, UseItem>) {
@@ -98,6 +106,14 @@ bool Battle::applyEnemyAction(const Action &action) {
                 << " uses " << act.move->getName()
                 << " dealing " << dmg << " damage!";
             menu.showTurnResult(msg.str());
+
+            if (act.move->getEffect() != NONE) {
+                int chance = rand() % 100;
+                if (chance < act.move->getEffectChance()) {
+                    playerActive->setStatus(act.move->getEffect(), act.move->getEffectDuration());
+                }
+            }
+
             return true;
         }
         else if constexpr (std::is_same_v<T, UseItem>) {
@@ -122,23 +138,91 @@ bool Battle::applyEnemyAction(const Action &action) {
     }, action);
 }
 
+bool Battle::hasAliveCreatures(Hobo* hobo) const {
+    const auto* zoo = hobo->getZoo().getStash(hobo);
+    for (const auto& [key, creature]: *zoo) {
+        if (creature->isAlive()) {
+            return true;
+        }
+    }
+    return false;
+}
+
 void Battle::run() { 
     while (playerActive->isAlive() && enemyActive->isAlive()) {
+
+        bool playerStunned = (playerActive->getStatus() == STUNNED);
+        bool enemyStunned = (enemyActive->getStatus() == STUNNED);
+
+        std::string pmsg = playerActive->applyStatusEffect();
+        if (!pmsg.empty()) {
+            menu.showTurnResult(" " + pmsg);
+        }
+        if (!playerActive->isAlive()) {
+            if (hasAliveCreatures(player)) {
+                BattleContext ctx = buildContext();
+                Action swapAction = player->nextAction(nullptr, ctx, menu);
+                applyPlayerAction(swapAction);
+            } else {
+                break;
+            }
+        }
+        std::string emsg = enemyActive->applyStatusEffect();
+        if (!emsg.empty()) {
+            menu.showTurnResult(" " + emsg);
+        }
+        if (!enemyActive->isAlive()) {
+            if (hasAliveCreatures(enemy)) {
+                const auto* stash = enemy->getZoo().getStash(enemy);
+                for (const auto& [key, creature] : *stash) {
+                    if (creature->isAlive()) {
+                        std::ostringstream msg;
+                        msg << "  " << enemy->getName() << " sends out " << creature->getName() << "!";
+                        menu.showTurnResult(msg.str());
+                        enemyActive = creature;
+                        break;
+                    }
+                }
+            } else {
+                break;
+            }
+        }
 
         player->resetChoiceContext();
         enemy->resetChoiceContext();
 
         BattleContext ctx = buildContext();
 
-        Action playerAction = player->nextAction(playerActive, ctx, menu);
+        bool playerFirst = playerActive->getSpeed() >= enemyActive->getSpeed();
+        Action playerAction, enemyAction;
+        if (!playerStunned) {
+            playerAction = player->nextAction(playerActive, ctx, menu);
+        }
+        if (!enemyStunned) {
+            enemyAction = enemy->nextAction(enemyActive, ctx, menu);
+        }
 
-        Action enemyAction = enemy->nextAction(enemyActive, ctx, menu);
-
-        applyPlayerAction(playerAction);
-        if (!enemyActive->isAlive()) { break; }
-
-        applyEnemyAction(enemyAction);
-        if (!playerActive->isAlive()) { break; }
+        if (playerFirst) {
+            if (!playerStunned) {
+                applyPlayerAction(playerAction);
+                if (!enemyActive->isAlive()) {
+                    break;
+                }
+            }
+            if (!enemyStunned) {
+                applyEnemyAction(enemyAction);
+            }
+        } else {
+            if (!enemyStunned) {
+                applyEnemyAction(enemyAction);
+                if (!playerActive->isAlive()) {
+                    break;
+                }
+            }
+            if (!playerStunned) {
+                applyPlayerAction(playerAction);
+            }
+        }
     }
 
     std::string winner = playerActive->isAlive()
