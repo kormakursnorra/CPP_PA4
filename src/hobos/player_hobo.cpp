@@ -55,7 +55,7 @@ Action PlayerHobo::nextAction(Creature *active,
                 if (confirm == 0) continue;
 
                 _choiceCtx.lastSwapTarget = rosterIdx;
-                Creature *incoming = zoo->getStashItem(this, rosterIdx - 1);
+                Creature *incoming = zoo->getStashItem(this, rosterIdx);
                 _lastAction = SwapCreature{ active, incoming };
                 return _lastAction;
             }
