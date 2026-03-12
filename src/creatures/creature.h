@@ -44,6 +44,10 @@ public:
     int getDefense() const;
     Status getStatus() const;
     Move* getMove(int moveKey) const;
+    void setHp(int newHp);
+    void setAttack(int newAttack);
+    void setDefence(int newDefence);
+    void setSpeed(int newSpeed);
 
     virtual ~Creature() {}
 };

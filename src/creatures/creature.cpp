@@ -130,3 +130,19 @@ Status Creature::getStatus() const {
 Move* Creature::getMove(int moveKey) const {
     return const_cast<Move *> (&moves[moveKey]);
 }
+
+void Creature::setHp(int newHp) {
+    hp = newHp;
+}
+
+void Creature::setAttack(int newAttack) {
+    attack = newAttack;
+}
+
+void Creature::setDefence(int newDefence) {
+    defense = newDefence;
+}
+
+void Creature::setSpeed(int newSpeed) {
+    speed = newSpeed;
+}
