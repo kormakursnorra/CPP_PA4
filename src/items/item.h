@@ -4,19 +4,19 @@
 
 class Creature;
 
-// enum ItemType {
-//     heal,
-//     add_attack,
-//     add_defence,
-//     add_speed
-// };
+enum ItemType {
+    heal,
+    add_attack,
+    add_defence,
+    add_speed
+};
 
 template <typename ItemType>
 class Item {
     private:
         const std::string name;
         const std::string description;
-        // ItemType type;
+        ItemType type;
         int effect;
     
     public:
@@ -25,7 +25,7 @@ class Item {
 
         std::string getItemName() const { return name; };
         std::string getItemDescription() const { return description; };
-        // ItemType getItemType() const {return type;} ;
+        ItemType getItemType() const {return type;} ;
         int getItemEffect() const { return effect; };
         bool applyItem(Creature* target) {
             return static_cast<ItemType*>(this)->applyItem(target);
