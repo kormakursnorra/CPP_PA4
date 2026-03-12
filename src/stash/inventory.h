@@ -22,6 +22,8 @@ protected:
     Inventory(const Hobo *inventoryKeeper);
     int decrementNumItems(Item *item);
     int getNumGroupedItems(Item *item) const;
+    
+    friend class Stash<Inventory, Item*>;
 };
 
 #endif

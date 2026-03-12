@@ -17,6 +17,8 @@ SRCS := src/game.cpp \
         src/creatures/move.cpp \
         src/stash/zoo.cpp \
 		src/stash/inventory.cpp \
+        src/items/item.cpp \
+        src/items/booze.cpp \
         src/ui/battle_menu.cpp \
         src/ui/tui.cpp
 

@@ -15,9 +15,7 @@ EnemyHobo::EnemyHobo(const std::string enemyName, std::string zooName)
     fillZoo();
     fillInventory();
     
-
-    numCreatures = zoo->getNumContents(this);
-    // numItems = inventory->getNumContents(this) + 1;
+    // numCreatures and numItems already set by parent Hobo constructor
 }
 
 void EnemyHobo::fillZoo() const {
