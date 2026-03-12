@@ -4,6 +4,7 @@
 #include "items/item.h"
 #include "ui/battle_menu.h"
 #include "creatures/creature.h"
+#include <iostream>
 
 
 PlayerHobo::PlayerHobo(const std::string hoboName, std::string zooName) 
@@ -11,6 +12,27 @@ PlayerHobo::PlayerHobo(const std::string hoboName, std::string zooName)
 
 Action PlayerHobo::nextAction(Creature *active, 
     const BattleContext &context, BattleMenu &menu) {
+
+    if (active == nullptr) {
+        while (true) {
+            int rosterIdx = menu.promptSwapMenu(context);
+            if (rosterIdx == 0) {
+                std::cout << "\nYou must send out a creature!\n";
+                continue;
+            }
+            
+            _choiceCtx.lastSwapTarget = rosterIdx;
+            Creature *incomming = zoo->getStashItem(this, rosterIdx);
+
+            if (!incomming->isAlive()) {
+                std::cout << "That creatuse has already fainted!";
+                continue;
+            }
+
+            _lastAction = SwapCreature{ nullptr, incomming};
+            return _lastAction;
+        }
+    }
 
     while (true) {
         int topChoice = menu.showBattleMenu(context);

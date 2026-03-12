@@ -21,35 +21,51 @@ Battle::Battle(Hobo *player, Hobo *enemy)
 
 BattleContext Battle::buildContext() const {
     BattleContext context;
+    Booze *booze = player->getBooze();
     context.playerName   = player->getName();
     context.enemyName    = enemy->getName();
     context.playerActive = player->makeCreatureInfo(playerActive, true);
     context.enemyActive  = enemy->makeCreatureInfo(enemyActive,  true);
     context.zoo          = player->makeZooInfo();
     context.items        = player->makeInventoryInfo();
-    context.booze        = player->makeBoozeInfo();
+    context.booze        = player->makeBoozeInfo(booze);
     return context;
 }
 
 
 int Battle::calcDmg(Creature *attacker, Move *move) const {
-    if (!move->hits()) { return 0; }
-    int dmg = (attacker->getAttack() * move->getPower()) / 100;
+    if (!move->hits()) { 
+        return 0;
+    }
+
+    int baseDmg = (attacker->getAttack() * move->getPower()) / 100;
+
+    if (attacker->getStatus() == WEAKENED) {
+        baseDmg = baseDmg / 2;
+    }
+
+    if (attacker->getStatus() == SCARED) {
+        if (rand() % 100 < 30) {
+            std::cout << " " << attacker->getName() << " is to scared to attack!\n";
+            return 0;
+        }
+    }
+
     bool crit = (rand() % 100) < 10;
     if (crit) {
         std::cout << tui::FG_YELLOW << "  Critical hit!" << tui::RESET << "\n";
-        dmg *= 2;
+        baseDmg *= 2;
     }
-    return dmg;
+    return baseDmg;
 }
 
-int calcEffect(Creature *receiver, Item *item) const {
-    ItemType type = item->getItemType();     
-    if constexpr (std::is_same_v<type, HEAL>) {
+// int calcEffect(Creature *receiver, Item *item) const {
+//     ItemType type = item->getItemType();     
+//     if constexpr (std::is_same_v<type, HEAL>) {
 
-    } 
-    int effect = item->getItemEffect() / 100;
-}
+//     } 
+//     int effect = item->getItemEffect() / 100;
+// }
 
 
 bool Battle::applyPlayerAction(const Action &action) {
@@ -76,8 +92,9 @@ bool Battle::applyPlayerAction(const Action &action) {
             return true;
         }
         else if constexpr (std::is_same_v<T, UseItem>) {
-            int effect = calcEffect(act.receiver, act.item);
-            playerActive->
+            // TODO
+            // int effect = calcEffect(act.receiver, act.item);
+            // playerActive->
 
             menu.showTurnResult("  " + player->getName() + " used an item.");
             return true;
@@ -157,7 +174,8 @@ bool Battle::hasAliveCreatures(Hobo* hobo) const {
 }
 
 void Battle::run() { 
-    while (playerActive->isAlive() && enemyActive->isAlive()) {
+    // while (playerActive->isAlive() && enemyActive->isAlive())
+    while(true) {
 
         bool playerStunned = (playerActive->getStatus() == STUNNED);
         bool enemyStunned = (enemyActive->getStatus() == STUNNED);
@@ -214,7 +232,7 @@ void Battle::run() {
             if (!playerStunned) {
                 applyPlayerAction(playerAction);
                 if (!enemyActive->isAlive()) {
-                    break;
+                    continue;
                 }
             }
             if (!enemyStunned) {
@@ -224,7 +242,7 @@ void Battle::run() {
             if (!enemyStunned) {
                 applyEnemyAction(enemyAction);
                 if (!playerActive->isAlive()) {
-                    break;
+                    continue;
                 }
             }
             if (!playerStunned) {
