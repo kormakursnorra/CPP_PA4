@@ -17,6 +17,7 @@ struct MoveInfo {
     int accuracy;
     int effectChance;
     Status effect;
+    int effectDuration;
 };
 
 struct CreatureInfo {
