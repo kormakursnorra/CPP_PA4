@@ -19,6 +19,5 @@ void Booze::takeSip() {
 }
 
 void Booze::refill() {
-    if (sipsLeft + 2 <= maxCapacity ) sipsLeft += 2;
-    else sipsLeft = 10;
+    sipsLeft = maxCapacity;
 }

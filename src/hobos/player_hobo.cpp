@@ -55,7 +55,7 @@ Action PlayerHobo::nextAction(Creature *active,
             case 3: {
                 int confirm = menu.promptBoozeMenu(context);
                 if (confirm == 0) continue;
-
+                booze->takeSip();
                 _lastAction = DrinkBooze{ booze.get() };
                 return _lastAction;
             }

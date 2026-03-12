@@ -69,7 +69,6 @@ private:
     BattleContext buildContext() const;
     
     int calcDmg(Creature *attacker, Move *move) const;
-    int calcEffect(Creature *attacker, Item *item) const;
     int calcBoozeEffect(Zoo *zoo, Item* booze) const;
     
     bool applyPlayerAction(const Action &action);

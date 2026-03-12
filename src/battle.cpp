@@ -43,15 +43,6 @@ int Battle::calcDmg(Creature *attacker, Move *move) const {
     return dmg;
 }
 
-int calcEffect(Creature *receiver, Item *item) const {
-    ItemType type = item->getItemType();     
-    if constexpr (std::is_same_v<type, HEAL>) {
-
-    } 
-    int effect = item->getItemEffect() / 100;
-}
-
-
 bool Battle::applyPlayerAction(const Action &action) {
     return std::visit([&](auto &&act) -> bool {
         using T = std::decay_t<decltype(act)>;
@@ -68,14 +59,15 @@ bool Battle::applyPlayerAction(const Action &action) {
             return true;
         }
         else if constexpr (std::is_same_v<T, UseItem>) {
-            int effect = calcEffect(act.receiver, act.item);
-            playerActive->
-
-            menu.showTurnResult("  " + player->getName() + " used an item.");
+            bool applied = act.item->applyItem(playerActive);
+            if (!applied) return false;
+            std::ostringstream msg;
+            msg << "  " << player->getName()
+                << " used " << act.item->getItemName()
+                << " !";
             return true;
         }
         else if constexpr (std::is_same_v<T, DrinkBooze>) {
-            // TODO: apply booze effect
             menu.showTurnResult("  " + player->getName() + " takes a swig!");
             return true;
         }
