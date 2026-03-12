@@ -26,6 +26,7 @@ struct ChoiceContext {
     int lastSwapTarget = -1;
 };
 
+
 class Hobo {
 protected:
     const std::string name;

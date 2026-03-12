@@ -142,7 +142,12 @@ bool Battle::applyEnemyAction(const Action &action) {
             return true;
         }
         else if constexpr (std::is_same_v<T, UseItem>) {
-            menu.showTurnResult("  " + enemy->getName() + " rummages through their coat...");
+            bool applied = act.item->applyItem(enemyActive);
+            if (!applied) return false;
+            std::ostringstream msg;
+            msg << "  " << enemy->getName()
+                << " used " << act.item->getItemName()
+                << " !";
             return true;
         }
         else if constexpr (std::is_same_v<T, DrinkBooze>) {
