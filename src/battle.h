@@ -49,13 +49,13 @@ struct BoozeInfo {
 };
 
 struct BattleContext {
-    str                playerName;
-    str                enemyName;
-    CreatureInfo       playerActive;
-    CreatureInfo       enemyActive;
-    Info<CreatureInfo> zoo;
-    Info<ItemInfo>     items;
-    BoozeInfo          booze;   
+    str playerName;
+    str enemyName;
+    CreatureInfo playerActive;
+    CreatureInfo enemyActive;
+    Info<CreatureInfo>zoo;
+    Info<ItemInfo> items;
+    BoozeInfo booze;   
 };
 
 
