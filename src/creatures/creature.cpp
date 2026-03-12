@@ -120,11 +120,6 @@ std::string Creature::applyStatusEffect() {
             msg = name + " is terrified!";
             break;
         }
-        case DEVINE: {
-            hp -= maxHp;
-            msg = name + " is cursed by divinity and dies!";
-            break;
-        }
         default: 
             break;
     }

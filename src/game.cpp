@@ -32,11 +32,11 @@ int main() {
     gutterMutt->addMove(Move("Guard", 0, 100, NONE, 0, 0));
     player.addCreature(gutterMutt);
 
-    Creature* sewerRatKing = new Creature("Sewer Rat King", 10000, 1000, 100, 100);
+    Creature* sewerRatKing = new Creature("Sewer Rat King", 100, 100, 100, 100);
     sewerRatKing->addMove(Move("Plague Bite", 55, 100, INFECTED, 60, 4));
     sewerRatKing->addMove(Move("Disease Cloud", 40, 90, POISONED, 50, 5));
     sewerRatKing->addMove(Move("Swarm Call", 60, 95, NONE, 0, 0));
-    sewerRatKing->addMove(Move("Devine Gnaw", 50, 100, DEVINE, 100, 2));
+    sewerRatKing->addMove(Move("Gnaw", 50, 100, BLEEDING, 100, 2));
     player.addCreature(sewerRatKing);
 
     Creature* alleyCat = new Creature("Alley Cat", 50, 75, 45, 95);

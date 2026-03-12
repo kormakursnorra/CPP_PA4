@@ -9,7 +9,6 @@ enum Status {
     POISONED,
     BLEEDING,
     WEAKENED,
-    DEVINE,
     SCARED
 };
 
