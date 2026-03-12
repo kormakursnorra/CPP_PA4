@@ -64,6 +64,11 @@ std::string Creature::getStatusName() const {
         case INFECTED: return "Infected";
         case STUNNED: return "stunned";
         case BURNED: return "Burned";
+        case POISONED: return "Poisoned";
+        case BLEEDING: return "Bleeding";
+        case WEAKENED: return "Weakened";
+        case DEVINE: return "Devine";
+        case SCARED: return "Scared";
         default: return "Fine";
     }
 
@@ -82,7 +87,7 @@ std::string Creature::applyStatusEffect() {
         case INFECTED: {
             int dmg = maxHp * 0.10;
             hp = std::max(0, hp - dmg);
-            msg = name + " is infected and lost " + std::to_string(dmg) + "HP!";
+            msg = name + " is infected and lost " + std::to_string(dmg) + " HP!";
             break; 
         }
         case STUNNED: {
@@ -90,10 +95,35 @@ std::string Creature::applyStatusEffect() {
             break; 
         }
         case BURNED: {
-            int bdmg = stats.maxHp * 0.05;
-            hp = std::max(0, hp - bdmg);
-            msg = name + " is burning and lost " + std::to_string(bdmg) + "HP!";
+            int dmg = maxHp * 0.05;
+            hp = std::max(0, hp - dmg);
+            msg = name + " is burning and lost " + std::to_string(dmg) + " HP!";
             break; 
+        }
+        case POISONED: {
+            int dmg = maxHp * 0.15;
+            hp -= dmg;
+            msg = name + " is badly poisoned and lost " + std::to_string(dmg) + " HP!";
+            break;
+        }
+        case BLEEDING: {
+            int dmg = maxHp * 0.10;
+            hp -= dmg;
+            msg = name + " is bleeding and lost" + std::to_string(dmg) + " HP!";
+            break;
+        }
+        case WEAKENED: {
+            msg = name + " is weakened!";
+            break;
+        }
+        case SCARED: {
+            msg = name + " is terrified!";
+            break;
+        }
+        case DEVINE: {
+            hp -= maxHp;
+            msg = name + " is cursed by divinity and dies!";
+            break;
         }
         default: 
             break;

@@ -52,7 +52,7 @@ public:
 
     Inventory& getInventory() const;
     Item* getItem(int itemKey) const;
-    Booze& getBooze() const;
+    Booze* getBooze() const;
     int getNumItems() const;
     int getNumGroupedItems(int itemKey) const;
     void addItem(Item *item);

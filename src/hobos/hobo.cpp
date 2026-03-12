@@ -63,8 +63,8 @@ Item* Hobo::getItem(int itemKey) const {
     return inventory->getStashItem(this, itemKey);
 }
 
-Booze& Hobo::getBooze() const {
-    return *booze.get();
+Booze* Hobo::getBooze() const {
+    return booze.get();
 }
 
 int Hobo::getNumItems() const {

@@ -56,3 +56,5 @@ bool Zoo::updateStatus(const Hobo *zooKeeper,  int creatureKey) {
     
     return true;
 }
+
+Zoo::~Zoo() {}
