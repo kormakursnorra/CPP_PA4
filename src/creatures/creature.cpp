@@ -4,8 +4,9 @@
 
 Creature::Creature(
     std::string name, int hp, int attack, int defense, int speed
-) : name(name), hp(hp), maxHp(hp), attack(attack),
-    defense(defense), speed(speed), moveCount(0),
+) : name(name), stats {
+    hp, speed, attack, defense, 
+    hp, speed, attack, defense}, moveCount(0),
     status(NONE), statusDuration(0) {}
 
 bool Creature::operator==(const Creature &other) const {
@@ -13,6 +14,9 @@ bool Creature::operator==(const Creature &other) const {
 }
 
 void Creature::takeDamage(int dmg) {
+    int &defense = stats.defense;
+    int &hp = stats.hp;
+
     int actual = (int)(((rand() % 5) + dmg) * (100 - defense) / 100);
     if (actual < 1) {
         actual = 1;
@@ -24,10 +28,12 @@ void Creature::takeDamage(int dmg) {
 }
 
 bool Creature::isAlive() const {
-    return hp > 0;
+    return stats.hp > 0;
 }
 
 void Creature::displayStatus() const {
+    int hp = stats.hp;
+    int maxHp = stats.maxHp;
     std::cout << name << " (" << hp << "/" << maxHp << ")";
 }
 
@@ -73,6 +79,9 @@ std::string Creature::applyStatusEffect() {
         return "";
     }
     std::string msg;
+
+    int &maxHp = stats.hp;
+    int &hp = stats.hp;
 
     switch (status) {
         case INFECTED: {
@@ -134,23 +143,35 @@ std::string Creature::getName() const {
 }
 
 int Creature::getHp() const {
-    return hp;
+    return stats.hp;
 }
 
 int Creature::getMaxHp() const {
-    return maxHp;
+    return stats.maxHp;
 }
 
 int Creature::getSpeed() const {
-    return speed;
+    return stats.speed;
+}
+
+int Creature::getMaxSpeed() const {
+    return stats.maxSpeed;
 }
 
 int Creature::getAttack() const {
-    return attack;
+    return stats.attack;
+}
+
+int Creature::getMaxAttack() const {
+    return stats.maxAttack;
 }
 
 int Creature::getDefense() const {
-    return defense;
+    return stats.defense;
+}
+
+int Creature::getMaxDefense() const {
+    return stats.maxDefense;
 }
 
 Status Creature::getStatus() const {
@@ -162,17 +183,17 @@ Move* Creature::getMove(int moveKey) const {
 }
 
 void Creature::setHp(int newHp) {
-    hp = newHp;
+    stats.hp = newHp;
 }
 
 void Creature::setAttack(int newAttack) {
-    attack = newAttack;
+    stats.attack = newAttack;
 }
 
 void Creature::setDefence(int newDefence) {
-    defense = newDefence;
+    stats.defense = newDefence;
 }
 
 void Creature::setSpeed(int newSpeed) {
-    speed = newSpeed;
+    stats.speed = newSpeed;
 }
