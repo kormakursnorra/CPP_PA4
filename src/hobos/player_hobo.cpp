@@ -42,7 +42,13 @@ Action PlayerHobo::nextAction(Creature *active,
                     inventory->remove(this, itemIdx);
                 }
                 
-                _lastAction = UseItem{ item };
+                int creatureIdx = menu.promptItemCreature(context);
+                Creature *creature = zoo->getStashItem(this, creatureIdx);
+
+                int confirm = menu.promptItemConfirm(context, creatureIdx, itemIdx);
+                if (confirm == 0) continue;
+
+                _lastAction = UseItem{ item, creature};
                 return _lastAction;
             }
 

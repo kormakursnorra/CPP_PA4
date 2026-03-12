@@ -8,8 +8,7 @@ enum ItemType {
     HEAL,
     EMPOWER,
     BOLSTER,
-    SPEED,
-    BOOZE
+    SPEED
 };
 
 class Item {

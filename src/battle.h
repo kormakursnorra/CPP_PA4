@@ -12,37 +12,38 @@ using Info = std::vector<T>;
 using str  = std::string;
 
 struct MoveInfo {
-    str    name;
-    int    power;
-    int    accuracy;
-    int    effectChance;
+    str name;
+    int power;
+    int accuracy;
+    int effectChance;
     Status effect;
 };
 
 struct CreatureInfo {
-    str            name;
-    int            hp;
-    int            maxHp;
-    int            attack;
-    int            defense;
-    int            speed;
-    Status         status;
-    str            statusName;
-    bool           alive;
-    bool           isActive;
+    str name;
+    int hp;
+    int maxHp;
+    int attack;
+    int defense;
+    int speed;
+    Status status;
+    str statusName;
+    bool alive;
+    bool isActive;
     Info<MoveInfo> moves;
-    int            moveCount = 0;
+    int moveCount = 0;
 };
 
 struct ItemInfo {
     str name;
-    int quantity;
+    str description;
+    ItemType type;
+    int effect;
 };
 
 struct BoozeInfo {
     int sipsLeft;
     int attackBoost;
-    int defenseBoost;
     int fleeChanceIncrease;
 };
 
@@ -68,6 +69,8 @@ private:
     BattleContext buildContext() const;
     
     int calcDmg(Creature *attacker, Move *move) const;
+    int calcEffect(Creature *attacker, Item *item) const;
+    int calcBoozeEffect(Zoo *zoo, Item* booze) const;
     
     bool applyPlayerAction(const Action &action);
     bool applyEnemyAction(const Action &action);

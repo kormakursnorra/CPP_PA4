@@ -8,11 +8,18 @@
 #include "creatures/creature.h"
 
 
-struct UseMove { Move *move; };
+struct UseMove { 
+    Move *move; 
+};
 
-struct UseItem { Item *item; };
+struct UseItem { 
+    Item *item; 
+    Creature *receiver; 
+};
 
-struct DrinkBooze { Item *drink; };
+struct DrinkBooze { 
+    Item *drink; 
+};
 struct SwapCreature { 
     Creature *active; 
     Creature *incoming;

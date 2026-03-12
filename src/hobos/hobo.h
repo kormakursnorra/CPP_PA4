@@ -8,11 +8,14 @@
 #include "actions.h"
 #include "stash/zoo.h"
 #include "items/item.h"
+#include "items/booze.h"
 #include "stash/inventory.h"
 #include "creatures/creature.h"
 
 
 struct CreatureInfo;
+struct ItemInfo;
+struct BoozeInfo;
 struct BattleContext;
 class BattleMenu;
 
@@ -28,7 +31,7 @@ protected:
     const std::string name;
     std::unique_ptr<Zoo> zoo;
     std::unique_ptr<Inventory> inventory;
-    std::unique_ptr<Item> booze;
+    std::unique_ptr<Booze> booze;
     
     int numCreatures;
     int numItems;
@@ -43,12 +46,13 @@ public:
     
     Zoo& getZoo() const;
     Creature* getCreature(int creatureKey) const;
-    int getNumCreatures() const;
     Creature* getStarter() const;
+    int getNumCreatures() const;
     void addCreature(Creature *creature);  
 
     Inventory& getInventory() const;
     Item* getItem(int itemKey) const;
+    Booze& getBooze() const;
     int getNumItems() const;
     int getNumGroupedItems(int itemKey) const;
     void addItem(Item *item);
@@ -61,7 +65,11 @@ public:
         const BattleContext &ctx, BattleMenu &menu) = 0;
 
     CreatureInfo makeCreatureInfo(Creature *creature, bool isActive = false);
+    ItemInfo makeItemInfo(Item *item);
+    BoozeInfo makeBoozeInfo(Booze *booze);
     std::vector<CreatureInfo> makeZooInfo();
+    std::vector<ItemInfo> makeInventoryInfo();
+    
     virtual ~Hobo();
 };
 

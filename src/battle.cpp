@@ -1,8 +1,10 @@
 #include <iostream>
 #include <sstream>
 #include <cstdlib>
+#include <type_traits>
 #include <variant>
 
+#include "items/item.h"
 #include "ui/tui.h"
 #include "battle.h"
 #include "hobos/actions.h"
@@ -41,6 +43,15 @@ int Battle::calcDmg(Creature *attacker, Move *move) const {
     return dmg;
 }
 
+int calcEffect(Creature *receiver, Item *item) const {
+    ItemType type = item->getItemType();     
+    if constexpr (std::is_same_v<type, HEAL>) {
+
+    } 
+    int effect = item->getItemEffect() / 100;
+}
+
+
 bool Battle::applyPlayerAction(const Action &action) {
     return std::visit([&](auto &&act) -> bool {
         using T = std::decay_t<decltype(act)>;
@@ -57,7 +68,9 @@ bool Battle::applyPlayerAction(const Action &action) {
             return true;
         }
         else if constexpr (std::is_same_v<T, UseItem>) {
-            // TODO: apply item effect
+            int effect = calcEffect(act.receiver, act.item);
+            playerActive->
+
             menu.showTurnResult("  " + player->getName() + " used an item.");
             return true;
         }
