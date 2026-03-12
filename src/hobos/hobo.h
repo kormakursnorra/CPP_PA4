@@ -56,6 +56,9 @@ public:
     int getNumItems() const;
     int getNumGroupedItems(int itemKey) const;
     void addItem(Item *item);
+    int getAlcoholMeter() const;
+    void drinkBooze();
+    void lessDrunk();
 
 
     void resetChoiceContext();

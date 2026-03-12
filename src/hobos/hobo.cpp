@@ -80,6 +80,39 @@ void Hobo::addItem(Item *item) {
     inventory->insert(this, item);
 }
 
+int Hobo::getAlcoholMeter() const {
+    return alchoholMeter;
+}
+
+void Hobo::drinkBooze() {
+    alchoholMeter += 2;
+
+    booze->takeSip();
+
+    int attackBoost = booze->getItemEffect();
+    auto *stash = zoo->getStash(this);
+    for (auto &[key, creature] : *stash) {
+        int baseAttack = creature->getMaxAttack();
+        int totalBoost = alchoholMeter * attackBoost;
+        creature->setAttack(baseAttack + totalBoost);
+    }
+}
+
+void Hobo::lessDrunk() {
+    if (alchoholMeter <= 0) return;
+
+    alchoholMeter--;
+
+    int attackBoost = booze->getItemEffect();
+    int totalBoost = alchoholMeter * attackBoost;
+
+    auto *stash = zoo->getStash(this);
+    for (auto &[key,creature] : *stash) {
+        int baseAttack = creature->getMaxAttack();
+        creature->setAttack(baseAttack + totalBoost);
+    }
+}
+
 void Hobo::resetChoiceContext() {
     _choiceCtx = ChoiceContext{};
 }

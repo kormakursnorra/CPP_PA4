@@ -64,6 +64,14 @@ bool Battle::applyPlayerAction(const Action &action) {
         using T = std::decay_t<decltype(act)>;
 
         if constexpr (std::is_same_v<T, UseMove>) {
+            int fleeChance = player->getAlcoholMeter() * 15;
+            if (fleeChance > 0 && (rand() % 100) < fleeChance) {
+                std::ostringstream msg;
+                msg << " " << playerActive->getName()
+                    << " fled in fear and refuses to fight!";
+                menu.showTurnResult(msg.str());
+                return true;
+            }
             int dmg = calcDmg(playerActive, act.move);
             enemyActive->takeDamage(dmg);
 
@@ -92,6 +100,7 @@ bool Battle::applyPlayerAction(const Action &action) {
             return true;
         }
         else if constexpr (std::is_same_v<T, DrinkBooze>) {
+            player->drinkBooze();
             menu.showTurnResult("  " + player->getName() + " takes a swig!");
             return true;
         }
@@ -189,6 +198,9 @@ void Battle::run() {
             menu.showTurnResult(" " + emsg);
         }
         if (!enemyActive->isAlive()) {
+            std::ostringstream deathMsg;
+            deathMsg << " " << enemyActive->getName() << " has been defeated!";
+            menu.showTurnResult(deathMsg.str());
             if (hasAliveCreatures(enemy)) {
                 const auto* stash = enemy->getZoo().getStash(enemy);
                 for (const auto& [key, creature] : *stash) {
@@ -240,6 +252,8 @@ void Battle::run() {
                 applyPlayerAction(playerAction);
             }
         }
+
+        player->lessDrunk();
     }
 
     std::string winner = playerActive->isAlive()
