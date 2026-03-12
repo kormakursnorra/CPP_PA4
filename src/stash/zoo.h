@@ -8,7 +8,6 @@
 
 class Zoo : public Stash<Creature*> {
 private:
-    const Hobo *zooKeeper;
     Creature *starter;
     
 protected:
