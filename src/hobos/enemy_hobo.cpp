@@ -14,8 +14,9 @@ EnemyHobo::EnemyHobo(const std::string enemyName, std::string zooName)
 
 Action EnemyHobo::nextAction(Creature *active, const BattleContext &, BattleMenu &) {
     int actionChoice = rand() % 100;
+    int itemCount = inventory->getNumContents(this);
 
-    if (actionChoice <= 75) {
+    if (actionChoice <= 75 || itemCount == 0) {
         int moveCount = 0;
         int candidates[4];
         for (int i = 0; i < 4; ++i) {
@@ -23,6 +24,20 @@ Action EnemyHobo::nextAction(Creature *active, const BattleContext &, BattleMenu
             if (move && move->getPower() > 0) {
                 candidates[moveCount++] = i;
             }
+        }
+
+        if (moveCount == 0) {
+            for (int i = 0; i < 4; ++i) {
+                Move *move = active->getMove(i);
+                if (move) {
+                    candidates[moveCount++] = i;
+                }
+            }
+        }
+
+        if (moveCount == 0) {
+            _lastAction = SwapCreature{ active, active };
+            return _lastAction;
         }
     
         int chosen = candidates[rand() % moveCount];
@@ -34,12 +49,36 @@ Action EnemyHobo::nextAction(Creature *active, const BattleContext &, BattleMenu
     else {
         int choice;
         Item *itemChosen = nullptr;
-        while (!itemChosen) {
-            choice = rand() % numItems;
+        int attempts = 0;
+        while (!itemChosen && attempts < (itemCount * 2)) {
+            choice = (rand() % itemCount) + 1;
             Item *item = inventory->getStashItem(this, choice);
-            if (item && item->getItemEffect() > 0) {
-                itemChosen = item;                
+            if (item) {
+                itemChosen = item;
             }
+            attempts++;
+        }
+
+        if (!itemChosen) {
+            int moveCount = 0;
+            int candidates[4];
+            for (int i = 0; i < 4; ++i) {
+                Move *move = active->getMove(i);
+                if (move) {
+                    candidates[moveCount++] = i;
+                }
+            }
+
+            if (moveCount == 0) {
+                _lastAction = SwapCreature{ active, active };
+                return _lastAction;
+            }
+
+            int chosen = candidates[rand() % moveCount];
+            Move *move = active->getMove(chosen);
+            _choiceCtx.lastMoveChoice = chosen + 1;
+            _lastAction = UseMove{ move };
+            return _lastAction;
         }
         
         _choiceCtx.lastItemChoice = choice;
