@@ -53,7 +53,7 @@ int Battle::calcDmg(Creature *attacker, Move *move) const {
 
     bool crit = (rand() % 100) < 10;
     if (crit) {
-        std::cout << tui::FG_YELLOW << "  Critical hit!" << tui::RESET << "\n";
+        std::cout << YELLOW << "  Critical hit!" << RESET << "\n";
         baseDmg *= 2;
     }
     return baseDmg;
