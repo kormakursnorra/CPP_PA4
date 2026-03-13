@@ -67,7 +67,6 @@ std::string Creature::getStatusName() const {
         case POISONED: return "Poisoned";
         case BLEEDING: return "Bleeding";
         case WEAKENED: return "Weakened";
-        case DEVINE: return "Devine";
         case SCARED: return "Scared";
         default: return "Fine";
     }

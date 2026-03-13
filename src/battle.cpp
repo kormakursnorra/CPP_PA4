@@ -105,6 +105,9 @@ bool Battle::applyPlayerAction(const Action &action) {
             return true;
         }
         else if constexpr (std::is_same_v<T, SwapCreature>) {
+            if (!act.incoming) {
+                return false;
+            }
             playerActive = act.incoming;
             std::ostringstream msg;
             msg << "  " << player->getName()
@@ -155,6 +158,9 @@ bool Battle::applyEnemyAction(const Action &action) {
             return true;
         }
         else if constexpr (std::is_same_v<T, SwapCreature>) {
+            if (!act.incoming) {
+                return false;
+            }
             enemyActive = act.incoming;
             std::ostringstream msg;
             msg << "  " << enemy->getName()
