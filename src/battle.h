@@ -4,58 +4,60 @@
 #include <vector>
 
 #include "hobos/hobo.h"
-#include "ui/battle_menu.h"
+#include "ui/battle_menu2.h"
 #include "creatures/creature.h"
+#include "items/item.h"
 
 template <typename T>
 using Info = std::vector<T>; 
 using str  = std::string;
 
 struct MoveInfo {
-    str name;
-    int power;
-    int accuracy;
-    int effectChance;
+    str    name;
+    int    power;
+    int    accuracy;
+    int    effectChance;
     Status effect;
-    int effectDuration;
 };
 
 struct CreatureInfo {
-    str name;
-    int hp;
-    int maxHp;
-    int attack;
-    int defense;
-    int speed;
-    Status status;
-    str statusName;
-    bool alive;
-    bool isActive;
+    str            name;
+    int            hp;
+    int            maxHp;
+    int            attack;
+    int            defense;
+    int            speed;
+    Status         status;
+    str            statusName;
+    bool           alive;
+    bool           isActive;
     Info<MoveInfo> moves;
-    int moveCount = 0;
+   // int            moveCount = 0;
 };
 
 struct ItemInfo {
     str name;
+    int quantity;
     str description;
-    ItemType type;
     int effect;
+    ItemType type;
 };
 
 struct BoozeInfo {
     int sipsLeft;
     int attackBoost;
+    int defenseBoost;
     int fleeChanceIncrease;
 };
 
 struct BattleContext {
-    str playerName;
-    str enemyName;
-    CreatureInfo playerActive;
-    CreatureInfo enemyActive;
-    Info<CreatureInfo>zoo;
-    Info<ItemInfo> items;
-    BoozeInfo booze;   
+    str                playerName;
+    str                enemyName;
+    CreatureInfo       playerActive;
+    CreatureInfo       enemyActive;
+    Info<CreatureInfo> zoo;
+    Info<ItemInfo>     items;
+    BoozeInfo          booze;   
 };
 
 
@@ -70,11 +72,9 @@ private:
     BattleContext buildContext() const;
     
     int calcDmg(Creature *attacker, Move *move) const;
-    int calcBoozeEffect(Zoo *zoo, Item* booze) const;
     
     bool applyPlayerAction(const Action &action);
     bool applyEnemyAction(const Action &action);
-    bool hasAliveCreatures(Hobo* hobo) const;
 
 public:
     Battle(Hobo* player, Hobo* enemy);

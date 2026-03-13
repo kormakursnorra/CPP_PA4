@@ -5,10 +5,10 @@
 #include <variant>
 
 #include "items/item.h"
-#include "ui/tui.h"
+#include "ui/tui2.h"
 #include "battle.h"
 #include "hobos/actions.h"
-#include "ui/battle_menu.h"
+#include "ui/battle_menu2.h"
 #include "hobos/enemy_hobo.h"
 #include "hobos/player_hobo.h"
 #include "creatures/creature.h"
