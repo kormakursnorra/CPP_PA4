@@ -4,8 +4,9 @@
 
 Creature::Creature(
     std::string name, int hp, int attack, int defense, int speed
-) : name(name), hp(hp), maxHp(hp), attack(attack),
-    defense(defense), speed(speed), moveCount(0),
+) : name(name), stats {
+    hp, speed, attack, defense, 
+    hp, speed, attack, defense}, moveCount(0),
     status(NONE), statusDuration(0) {}
 
 bool Creature::operator==(const Creature &other) const {
@@ -13,6 +14,9 @@ bool Creature::operator==(const Creature &other) const {
 }
 
 void Creature::takeDamage(int dmg) {
+    int &defense = stats.defense;
+    int &hp = stats.hp;
+
     int actual = (int)(((rand() % 5) + dmg) * (100 - defense) / 100);
     if (actual < 1) {
         actual = 1;
@@ -24,10 +28,12 @@ void Creature::takeDamage(int dmg) {
 }
 
 bool Creature::isAlive() const {
-    return hp > 0;
+    return stats.hp > 0;
 }
 
 void Creature::displayStatus() const {
+    int hp = stats.hp;
+    int maxHp = stats.maxHp;
     std::cout << name << " (" << hp << "/" << maxHp << ")";
 }
 
@@ -51,7 +57,6 @@ void Creature::setStatus(Status s, int duration) {
     }
     status = s;
     statusDuration = duration;
-    std::cout << name << " is now " << getStatusName() << "!\n";
 }
 
 std::string Creature::getStatusName() const {
@@ -59,38 +64,61 @@ std::string Creature::getStatusName() const {
         case INFECTED: return "Infected";
         case STUNNED: return "stunned";
         case BURNED: return "Burned";
+        case POISONED: return "Poisoned";
+        case BLEEDING: return "Bleeding";
+        case WEAKENED: return "Weakened";
+        case DEVINE: return "Devine";
+        case SCARED: return "Scared";
         default: return "Fine";
     }
 
 }
 
-void Creature::applyStatusEffect() {
+std::string Creature::applyStatusEffect() {
     if (status == NONE) {
-        return;
+        return "";
     }
+    std::string msg;
+
+    int &maxHp = stats.hp;
+    int &hp = stats.hp;
 
     switch (status) {
         case INFECTED: {
             int dmg = maxHp * 0.10;
-            hp -= dmg;
-            if (hp < 0) {
-                hp = 0;
-            }
-            std::cout << name << " is infected and lost " << dmg << "HP!\n";
+            hp = std::max(0, hp - dmg);
+            msg = name + " is infected and lost " + std::to_string(dmg) + " HP!";
             break; 
         }
         case STUNNED: {
-            std::cout << name << " is stunned and cant move!\n";
+            msg = name + " is stunned and cant move!";
             break; 
         }
         case BURNED: {
-            int bdmg = maxHp * 0.05;
-            hp -= bdmg;
-            if (hp < 0) {
-                hp = 0;
-            }
-            std::cout << name << " is burning and lost " << bdmg << "HP!\n";
+            int dmg = maxHp * 0.05;
+            hp = std::max(0, hp - dmg);
+            msg = name + " is burning and lost " + std::to_string(dmg) + " HP!";
             break; 
+        }
+        case POISONED: {
+            int dmg = maxHp * 0.15;
+            hp -= dmg;
+            msg = name + " is badly poisoned and lost " + std::to_string(dmg) + " HP!";
+            break;
+        }
+        case BLEEDING: {
+            int dmg = maxHp * 0.10;
+            hp -= dmg;
+            msg = name + " is bleeding and lost" + std::to_string(dmg) + " HP!";
+            break;
+        }
+        case WEAKENED: {
+            msg = name + " is weakened!";
+            break;
+        }
+        case SCARED: {
+            msg = name + " is terrified!";
+            break;
         }
         default: 
             break;
@@ -98,10 +126,11 @@ void Creature::applyStatusEffect() {
 
     statusDuration--;
     if (statusDuration <= 0) {
-        std::cout << name << " recovered from" << getStatusName() << "!\n";
+        msg =  "\n " + name + " recovered from" + getStatusName() + "!";
         status = NONE;
         statusDuration = 0;
     }
+    return msg;
 }
 
 std::string Creature::getName() const {
@@ -109,23 +138,35 @@ std::string Creature::getName() const {
 }
 
 int Creature::getHp() const {
-    return hp;
+    return stats.hp;
 }
 
 int Creature::getMaxHp() const {
-    return maxHp;
+    return stats.maxHp;
 }
 
 int Creature::getSpeed() const {
-    return speed;
+    return stats.speed;
+}
+
+int Creature::getMaxSpeed() const {
+    return stats.maxSpeed;
 }
 
 int Creature::getAttack() const {
-    return attack;
+    return stats.attack;
+}
+
+int Creature::getMaxAttack() const {
+    return stats.maxAttack;
 }
 
 int Creature::getDefense() const {
-    return defense;
+    return stats.defense;
+}
+
+int Creature::getMaxDefense() const {
+    return stats.maxDefense;
 }
 
 Status Creature::getStatus() const {
@@ -137,17 +178,17 @@ Move* Creature::getMove(int moveKey) const {
 }
 
 void Creature::setHp(int newHp) {
-    hp = newHp;
+    stats.hp = newHp;
 }
 
 void Creature::setAttack(int newAttack) {
-    attack = newAttack;
+    stats.attack = newAttack;
 }
 
 void Creature::setDefence(int newDefence) {
-    defense = newDefence;
+    stats.defense = newDefence;
 }
 
 void Creature::setSpeed(int newSpeed) {
-    speed = newSpeed;
+    stats.speed = newSpeed;
 }

@@ -6,32 +6,24 @@
 #include "stash.h"
 #include "items/item.h"
 
-template <typename ItemType>
-class Inventory : public Stash<Inventory<Item<ItemType>>, Item<ItemType>*> {
+
+class Inventory : public Stash<Inventory, Item*> {
 private:
     const Hobo *inventoryKeeper;
 
 protected:
-    using NumGroupedItems = std::unordered_map<Item<ItemType>*, int>; 
+    using NumGroupedItems = std::unordered_map<Item*, int>; 
     NumGroupedItems numGroupedItems;
     
-    void onInsert(Item<ItemType> *item) {
-        int numItems = 0;
-        if (numGroupedItems.count(item) == 0) {
-            numGroupedItems.insert({item, numItems + 1});      
-        }
-        numItems = numGroupedItems.at(item);
-        numGroupedItems.insert({item, numItems + 1});
-    }
+    void onInsert(Item *item);
+    void onRemove(Item *item);
     
-    void onRemove(Item<ItemType> *item) {
-        
-        numGroupedItems.at(item)--;
-    }
+    public:
+    Inventory(const Hobo *inventoryKeeper);
+    int decrementNumItems(Item *item);
+    int getNumGroupedItems(Item *item) const;
     
-public:
-    Inventory(const Hobo *inventoryKeeper)
-    : Stash<Inventory, Item<ItemType>*>(inventoryKeeper) {};
+    friend class Stash<Inventory, Item*>;
 };
 
 #endif

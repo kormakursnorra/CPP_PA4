@@ -5,13 +5,12 @@
 class Creature;
 
 enum ItemType {
-    heal,
-    add_attack,
-    add_defence,
-    add_speed
+    HEAL,
+    EMPOWER,
+    BOLSTER,
+    SPEED
 };
 
-template <typename ItemType>
 class Item {
     private:
         const std::string name;
@@ -20,16 +19,16 @@ class Item {
         int effect;
     
     public:
-        Item(const std::string name, const std::string description, int effect)
-        :name(name), description(description), effect(effect) {};
+        Item(const std::string name, 
+            const std::string description, 
+            ItemType type, int effect
+        );
 
-        std::string getItemName() const { return name; };
-        std::string getItemDescription() const { return description; };
-        ItemType getItemType() const {return type;} ;
-        int getItemEffect() const { return effect; };
-        bool applyItem(Creature* target) {
-            return static_cast<ItemType*>(this)->applyItem(target);
-        };
+        std::string getItemName() const;
+        std::string getItemDescription() const;
+        ItemType getItemType() const;
+        int getItemEffect() const;
+        bool applyItem(Creature* target);
 
 };
 

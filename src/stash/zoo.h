@@ -8,7 +8,6 @@
 
 class Zoo : public Stash<Zoo, Creature*> {
 private:
-    const Hobo *zooKeeper;
     Creature *starter;
     
 protected:
@@ -26,6 +25,8 @@ public:
     bool changeStarter(const Hobo *zooKeeper, int creatureKey);
     bool updateStatus(const Hobo *zooKeeper, int creatureKey);
     ~Zoo();
+    
+    friend class Stash<Zoo, Creature*>;
 };
 
 #endif

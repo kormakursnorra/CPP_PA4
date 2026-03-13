@@ -22,8 +22,8 @@ public:
    
     int promptMoveMenu(const BattleContext &ctx) const;
     int promptItemMenu(const BattleContext &ctx) const;
-    // int promptCreatureSelect(const BattleContext &ctx) const;
-    int promptItemConfirm(const BattleContext &ctx, int itemIdx) const;
+    int promptItemCreature(const BattleContext &context) const;
+    int promptItemConfirm(const BattleContext &ctx, int creatureIdx, int itemIdx) const;
     int promptBoozeMenu(const BattleContext &ctx) const;
     int promptSwapMenu(const BattleContext &ctx) const;
     int promptSwapConfirm(const BattleContext &ctx, int rosterIdx) const;

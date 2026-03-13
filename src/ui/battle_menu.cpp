@@ -8,7 +8,6 @@
 #include "battle_menu.h"
 #include "battle.h"  
 
-
 // Battle Menu (top level)
 int BattleMenu::showBattleMenu(const BattleContext &context) {
     tui::clearScreen();
@@ -106,7 +105,9 @@ int BattleMenu::promptItemMenu(const BattleContext &context) const {
             std::ostringstream row;
             row << tui::FG_YELLOW << tui::BOLD << (i + 1) << "." << tui::RESET << "  "
                 << tui::padRight(item.name, 20)
-                << "  x" << item.quantity;
+                << "Desc: " << item.description
+                << "Effect: " << item.effect
+                << "Type: " << item.type;
             lines.push_back(row.str());
         }
     }
@@ -118,37 +119,53 @@ int BattleMenu::promptItemMenu(const BattleContext &context) const {
     return tui::readInt(0, itemCount);
 }
 
-// int BattleMenu::promptCreatureSelect(const BattleContext &context) const {
-//     tui::clearScreen();
-//     _printBattleHeader(context);
-//     std::cout << "\n";
-//     tui::printHeader("  USE ON WHICH CREATURE?  ", WIDTH);
-//     std::cout << "\n";
+int BattleMenu::promptItemCreature(const BattleContext &context) const {
+    tui::clearScreen();
+    _printBattleHeader(context);
+    std::cout << "\n";
+    tui::printHeader("  USE ON WHICH CREATURE?  ", WIDTH);
+    std::cout << "\n";
 
-//     std::vector<std::string> targetLines;
-//     int aliveCount = 0;
-//     std::vector<int> aliveIndices; 
+    std::vector<std::string> targetLines;
+    int aliveCount = 0;
+    std::vector<int> aliveIndices; 
 
-//     for (int i = 0; i < (int)context.zoo.size(); ++i) {
-//         const CreatureInfo& creature = context.zoo[i];
-//         if (!creature.alive) { continue; }
-//         ++aliveCount;
-//         aliveIndices.push_back(i);
+    for (int i = 0; i < (int)context.zoo.size(); ++i) {
+        const CreatureInfo& creature = context.zoo[i];
+        if (!creature.alive) { continue; }
+        ++aliveCount;
+        aliveIndices.push_back(i);
 
-//         std::ostringstream row;
-//         row << tui::FG_YELLOW << tui::BOLD << aliveCount << "." << tui::RESET << "  "
-//             << tui::padRight(creature.name, 14)
-//             << "  HP: " << tui::hpBar(creature.hp, creature.maxHp, 10);
-//         targetLines.push_back(row.str());
-//     }
+        std::ostringstream row;
+        row << tui::FG_YELLOW << tui::BOLD << aliveCount << "." << tui::RESET << "  "
+            << tui::padRight(creature.name, 14)
+            << "  HP: " << tui::hpBar(creature.hp, creature.maxHp, 10);
+        targetLines.push_back(row.str());
+    }
 
-//     targetLines.push_back(std::string(tui::DIM) + "─────────────────────" + tui::RESET);
-//     targetLines.push_back(std::string(tui::DIM) + "0.  Back"              + tui::RESET);
-//     tui::printBox(targetLines, WIDTH, tui::FG_CYAN);
+    targetLines.push_back(std::string(tui::DIM) + "─────────────────────" + tui::RESET);
+    targetLines.push_back(std::string(tui::DIM) + "0.  Back"              + tui::RESET);
+    tui::printBox(targetLines, WIDTH, tui::FG_CYAN);
 
-//     return tui::readInt(0, aliveIndices);
-// }
+    return tui::readInt(0, aliveIndices.size());
+}
 
+
+int BattleMenu::promptItemConfirm(const BattleContext &context, int creatureIdx, int itemIdx) const {
+    const CreatureInfo &target = context.zoo[creatureIdx - 1];
+    const ItemInfo &item = context.items[itemIdx - 1];
+    
+    tui::printBox({
+        std::string(tui::FG_WHITE) + "  Use " + item.name + " On "
+            + tui::FG_CYAN + tui::BOLD + target.name + tui::RESET + "?",
+        "",
+        std::string(tui::FG_GREEN) + tui::BOLD + "1.  Yes, use " + item.name + " !" + tui::RESET,
+        std::string(tui::FG_RED)                + "0.  No, go back"        + tui::RESET,
+    }, WIDTH, tui::FG_CYAN);
+
+    return tui::readInt(0, 1);
+
+}
 
 // 3. Drink Booze 
 int BattleMenu::promptBoozeMenu(const BattleContext &context) const {
@@ -173,8 +190,7 @@ int BattleMenu::promptBoozeMenu(const BattleContext &context) const {
     lines.push_back(std::string(tui::BOLD) + tui::FG_WHITE + "  Effects per drink:" + tui::RESET);
     
     row << "    All creatures:"
-        << "  ATK +" << tui::FG_RED  << booze.attackBoost  << tui::RESET
-        << "  DEF +" << tui::FG_BLUE << booze.defenseBoost << tui::RESET;
+        << "  ATK +" << tui::FG_RED  << booze.attackBoost  << tui::RESET;
     lines.push_back(row.str());
     row.str("");
     row.clear();
@@ -234,6 +250,8 @@ int BattleMenu::promptSwapMenu(const BattleContext &context) const {
                 << "  ATK " << tui::FG_RED  << creature.attack  << tui::RESET
                 << "  DEF " << tui::FG_BLUE << creature.defense << tui::RESET
                 << "  SPD " << tui::FG_CYAN << creature.speed   << tui::RESET;
+                if (creature.status != Status::NONE)                                                  
+                    row << "  " << tui::FG_YELLOW << "[" << creature.statusName << "]" << tui::RESET;
         }
 
         if (creature.isActive)
@@ -363,8 +381,14 @@ void BattleMenu::_printBattleHeader(const BattleContext &context) const {
     std::ostringstream left, right;
     left  << tui::FG_GREEN << tui::BOLD << tui::padRight(p.name, 12) << tui::RESET
           << " " << tui::hpBar(p.hp, p.maxHp, 10);
+    if (p.status != Status::NONE) {
+        left << " " << tui::FG_YELLOW << "[" << p.statusName << ']' << tui::RESET;
+    }
     right << tui::FG_RED   << tui::BOLD << tui::padRight(e.name, 12) << tui::RESET
           << " " << tui::hpBar(e.hp, e.maxHp, 10);
+    if (e.status != Status::NONE) {
+        right << " " << tui::FG_YELLOW << "[" << e.statusName << ']' << tui::RESET;
+    }
 
     std::cout << "  " << left.str()
               << tui::FG_WHITE << "  vs  " << tui::RESET

@@ -8,12 +8,11 @@ Zoo::Zoo(const Hobo *zooKeeper, std::string name)
 
 
 void Zoo::onInsert(Creature *creature) {
-    if (numContents == 1) { starter = creature; }
+    if (numContents == 0) { starter = creature; }
     numAlive++;
 }
 
-void Zoo::onRemove(Creature *creature) {
-    
+void Zoo::onRemove(Creature *creature) { 
     if (starter == creature) { starter = nullptr; }
     numAlive--;
 }
@@ -57,3 +56,5 @@ bool Zoo::updateStatus(const Hobo *zooKeeper,  int creatureKey) {
     
     return true;
 }
+
+Zoo::~Zoo() {}

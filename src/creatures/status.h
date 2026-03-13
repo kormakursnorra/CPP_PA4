@@ -5,7 +5,11 @@ enum Status {
     NONE,
     INFECTED,
     STUNNED,
-    BURNED
+    BURNED,
+    POISONED,
+    BLEEDING,
+    WEAKENED,
+    SCARED
 };
 
 #endif

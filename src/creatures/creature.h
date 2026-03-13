@@ -5,15 +5,22 @@
 
 #include <string>
 
+struct Stats {
+    int hp;
+    int speed;
+    int attack;
+    int defense;
+
+    int maxHp;
+    int maxSpeed;
+    int maxAttack;
+    int maxDefense;
+};
 
 class Creature {
 protected:
     std::string name;
-    int hp;
-    int maxHp;
-    int attack;
-    int defense;
-    int speed;
+    Stats stats;
     Move moves[4];
     int moveCount;
     Status status;
@@ -33,15 +40,18 @@ public:
     void displayMoves() const;
     void addMove(Move move);
     void setStatus(Status s, int duration);
-    void applyStatusEffect();
+    std::string applyStatusEffect();
     std::string getStatusName() const;
 
     std::string getName() const;
     int getHp() const;
     int getMaxHp() const;
     int getSpeed() const;
+    int getMaxSpeed() const;
     int getAttack() const;
+    int getMaxAttack() const;
     int getDefense() const;
+    int getMaxDefense() const;
     Status getStatus() const;
     Move* getMove(int moveKey) const;
     void setHp(int newHp);
