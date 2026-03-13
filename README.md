@@ -70,14 +70,73 @@ Hobo (abstract base)
 |--PlayerHobo
 |--EnemyHob
 
-Gera meira
+Item (base)
+|--Booze (special item)
+
+Stash<T> (template container)
+|--Zoo (manages creatures)
+|--Inventory (manages Items)
 
 ### Key Classes
+**Hobo**
+- Manages a Zoo (creature team) and Inventory (items)
+- Tracks alcohol meter for booze effects
+- Virtual method NextAction - subclasses decide their turn action
+**Creature**
+- Base class for all combatants
+- Tracks Stats like HP, attack, defense and speed
+- Handles status effects and damage calculations
+**Move**
+- Represents an attack action
+- Properties: power, accuracy, effect (status), effect duration, effect chance
+**Battle
+- Core game loop in run() method
+- Manages turn order based on speed
+- calcDmg() implements damage formula
+- Action dispatch via std::visit() pattern matching
+**Items and Booze**
+- Item base class for consumables
+- Booze extends item with limited sips and refill mechanics
+- Items can apply effects: heal, empower (attack boost). etc
 
 ### Damage Formula
+baseDamage = (attacker.attack * move.power) / 100
+Modifiers:
+- If weakend status: baseDamage /= 2
+- if scared status: 30% chance to deal 0 damage
+- Critical hit chance: 10% -> baseDamage *= 2
+finalDamage = (baseDamage + variance) * (100 - defender.defense) / 100
 
 ### Alcohol System
+1. Increment alcoholMeter
+2. Decrement booze.sipsLeft
+3. Calculate Boost: totalBoost = alcoholMeter * boozePower
+4. Apply to all creatures: creature.attack = creature.maxAttack + totalBoost
+
+**Each Turn:**
+- player->decayAlcohol() reduces meter by 1
+- Creatures attack scales down proportionally
+- Flee chance decreases: fleeChance = alcoholMeter * 10%
 
 ### Building the project
+**Requirements:**
+- C++17 compiler (g++ or clang)
+- GNU Make
+**Build**
+```bash
+make # Builds executable to bin/hobo_fighters
+make clean # Removes build artifacts
+make run # Builds and runs the game
+```
+The makefile compiles all source files with -Wall -Wextra -Werror flags for strict error checking
 
-### File Structure
+### Game Flow
+1. Init - Game creates player and enemy hobos with their creature teams
+2. Main battle loop
+   1. Apply status effects from previous turn
+   2. Check for defeated creatures auto swap if needed
+   3. Get action from both player (player via menu, enemy via AI)
+   4. Execute Actions in speed order
+   5. Decay alcohol for player
+   6. Repeat until one side has no creatures left
+3. Victory - Display winner and return to main menu
