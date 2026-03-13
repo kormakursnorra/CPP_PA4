@@ -5,10 +5,10 @@
 #include <variant>
 
 #include "items/item.h"
-#include "ui/tui.h"
+#include "ui/tui2.h"
 #include "battle.h"
 #include "hobos/actions.h"
-#include "ui/battle_menu.h"
+#include "ui/battle_menu2.h"
 #include "hobos/enemy_hobo.h"
 #include "hobos/player_hobo.h"
 #include "creatures/creature.h"
@@ -53,7 +53,7 @@ int Battle::calcDmg(Creature *attacker, Move *move) const {
 
     bool crit = (rand() % 100) < 10;
     if (crit) {
-        std::cout << tui::FG_YELLOW << "  Critical hit!" << tui::RESET << "\n";
+        std::cout << YELLOW << "  Critical hit!" << RESET << "\n";
         baseDmg *= 2;
     }
     return baseDmg;

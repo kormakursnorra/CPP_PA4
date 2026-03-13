@@ -2,7 +2,7 @@
 #include <ctime>
 
 #include "battle.h"
-#include "ui/tui.h"
+#include "ui/tui2.h"
 #include "hobos/player_hobo.h"
 #include "hobos/enemy_hobo.h"
 #include "hobos/boss.h"
